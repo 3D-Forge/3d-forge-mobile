@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.AuthRegisterActivity"
+    android:background="@color/purple">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/logoImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:src="@drawable/logo"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.496"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.024" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/loginOptionButt"
+            android:layout_width="97dp"
+            android:layout_height="37dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="28dp"
+            android:background="@drawable/round_btn"
+            android:text="Увійти"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.108"
+            app:layout_constraintStart_toEndOf="@+id/regOptionButt"
+            app:layout_constraintTop_toBottomOf="@+id/logoImage"
+            app:layout_constraintVertical_bias="0.003" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/regOptionButt"
+            android:layout_width="140dp"
+            android:layout_height="39dp"
+            android:layout_marginTop="28dp"
+            android:background="@drawable/deactivated_button"
+            android:text="Реєстрація"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.387"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/logoImage"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <EditText
+            android:id="@+id/loginEmailEditText"
+            android:layout_width="375dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="116dp"
+            android:ems="10"
+            android:hint="Логін/Пошта"
+            android:inputType="text"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.333"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/loginOptionButt"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <EditText
+            android:id="@+id/passwordEditText"
+            android:layout_width="375dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="12dp"
+            android:ems="10"
+            android:hint="Пароль"
+            android:inputType="textPassword"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.333"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/loginEmailEditText"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <CheckBox
+            android:id="@+id/rememberCheckBox"
+            android:layout_width="162dp"
+            android:layout_height="57dp"
+            android:layout_marginTop="8dp"
+            android:text="Запам'ятати мене"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.048"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/passwordEditText"
+            app:layout_constraintVertical_bias="0.014" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/authButton"
+            android:layout_width="379dp"
+            android:layout_height="41dp"
+            android:layout_marginTop="72dp"
+            android:background="@drawable/round_btn_auth"
+            android:text="Увійти"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.375"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rememberCheckBox"
+            app:layout_constraintVertical_bias="0.083" />
+
+        <TextView
+            android:id="@+id/newPasswordTextView"
+            android:layout_width="144dp"
+            android:layout_height="21dp"
+            android:layout_marginTop="12dp"
+            android:text="Забули свій пароль?"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.044"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/authButton"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <EditText
+            android:id="@+id/loginEditText"
+            android:visibility="gone"
+            android:layout_width="375dp"
+            android:layout_height="55dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="64dp"
+            android:ems="10"
+            android:hint="Логін"
+            android:textColorHint="@color/white"
+            android:inputType="text"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/regOptionButt" />
+
+        <EditText
+            android:id="@+id/emailEditText"
+            android:visibility="gone"
+            android:layout_width="375dp"
+            android:layout_height="55dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="48dp"
+            android:ems="10"
+            android:hint="Електронна пошта"
+            android:inputType="textEmailAddress"
+            android:textColorHint="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/loginEditText" />
+
+        <EditText
+            android:id="@+id/passwordRegEditText"
+            android:visibility="gone"
+            android:layout_width="375dp"
+            android:layout_height="55dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="44dp"
+            android:ems="10"
+            android:hint="Пароль"
+            android:inputType="textPassword"
+            android:textColorHint="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/emailEditText" />
+
+        <EditText
+            android:id="@+id/passwordRegConfirmEditText"
+            android:visibility="gone"
+            android:layout_width="375dp"
+            android:layout_height="55dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="36dp"
+            android:ems="10"
+            android:hint="Повтор паролю"
+            android:inputType="textPassword"
+            android:textColorHint="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/passwordRegEditText" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/regButton"
+            android:visibility="gone"
+            android:layout_width="379dp"
+            android:layout_height="41dp"
+            android:layout_marginTop="124dp"
+            android:background="@drawable/round_btn_auth"
+            android:text="Створити акаунт"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/passwordRegConfirmEditText" />
+
+        <CheckBox
+            android:id="@+id/confirmationCheckBox"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="28dp"
+            android:text="Створюючи акаунт ви погоджуєтесь"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/passwordRegConfirmEditText" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
