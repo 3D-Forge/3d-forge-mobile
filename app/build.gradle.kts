@@ -46,6 +46,8 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     implementation ("androidx.navigation:navigation-fragment:2.7.4")
     implementation ("androidx.navigation:navigation-ui:2.7.4")
+    implementation ("androidx.viewpager2:viewpager2:1.0.0")
+    implementation ("com.google.android.material:material:1.10.0")
 
     //Okhttp
     implementation ("com.squareup.okhttp3:okhttp:4.11.0")

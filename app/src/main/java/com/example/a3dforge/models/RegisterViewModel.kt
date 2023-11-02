@@ -1,11 +1,11 @@
 package com.example.a3dforge.models
 
+import OkHttpConfig
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.a3dforge.base.ApiManager.Companion.contentType
-import com.example.a3dforge.base.OkHttpConfig
 import com.example.a3dforge.entities.SignUpRequestBody
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -20,8 +20,8 @@ class RegisterViewModel(private val okHttpConfig: OkHttpConfig) : ViewModel() {
     val registrationResult: LiveData<Boolean>
         get() = _registrationResult
 
-    suspend fun registerUser(login: String, email: String, password: String) {
-        val requestBody = SignUpRequestBody(login, email, password)
+    suspend fun registerUser(login: String, email: String, password: String, confirmPassword: String) {
+        val requestBody = SignUpRequestBody(login, email, password, confirmPassword)
         val registerRequestBodyString = okHttpConfig.gson.toJson(requestBody)
         val okHttpRequestBody = registerRequestBodyString.toRequestBody(contentType)
 

@@ -1,5 +1,7 @@
 package com.example.a3dforge.activities
 
+import OkHttpConfig
+import android.content.Intent
 import android.graphics.Paint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -14,16 +16,11 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.a3dforge.R
-import com.example.a3dforge.base.OkHttpConfig
-import com.example.a3dforge.base.SSLFactory
-import com.example.a3dforge.models.AuthRegisterViewModelFactory
+import com.example.a3dforge.factories.AuthRegisterViewModelFactory
 import com.example.a3dforge.models.AuthViewModel
 import com.example.a3dforge.models.RegisterViewModel
-import com.google.gson.Gson
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 
 class AuthRegisterActivity : AppCompatActivity() {
 
@@ -76,26 +73,23 @@ class AuthRegisterActivity : AppCompatActivity() {
             changeVisibilityForLogin()
         }
 
-        val okHttpConfig = OkHttpConfig(
-            baseUrl = "https://192.168.0.102:44416/api/user/",
-            client = OkHttpClient.Builder()
-                .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
-                .sslSocketFactory(SSLFactory().createInsecureSslSocketFactory(), SSLFactory().createX509TrustManager())
-                .hostnameVerifier { _, _ -> true }
-                .build(),
-            gson = Gson()
-        )
+        val okHttpConfig = OkHttpConfig
 
         authViewModel = ViewModelProvider(this, AuthRegisterViewModelFactory(okHttpConfig)).get(AuthViewModel::class.java)
 
-        authViewModel.authResult.observe(this, Observer { success ->
-            if (success) {
+        authViewModel.authResult.observe(this, Observer { result ->
+            val (isSuccessful, login) = result
+            if (isSuccessful) {
                 Toast.makeText(this, "Авторизація успішна!", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, MainActivity::class.java)
+                intent.putExtra("user_login", login)
+                startActivity(intent)
             } else {
                 Log.e("AuthRegisterActivity", "Authentication failed")
                 Toast.makeText(this, "Неправильна пошта, логін чи пароль!", Toast.LENGTH_SHORT).show()
             }
         })
+
 
         authButton.setOnClickListener {
             val loginOrEmail = loginEmailEditText.text.toString()
@@ -126,7 +120,7 @@ class AuthRegisterActivity : AppCompatActivity() {
                 Toast.makeText(this, "Погодьтесь з умовами!", Toast.LENGTH_SHORT).show()
             } else {
                 GlobalScope.launch {
-                    registerViewModel.registerUser(login, email, password)
+                    registerViewModel.registerUser(login, email, password, confirmPassword)
                 }
             }
         }
@@ -151,6 +145,7 @@ class AuthRegisterActivity : AppCompatActivity() {
         passwordEditText.visibility = View.VISIBLE
         authButton.visibility = View.VISIBLE
         newPasswordTextView.visibility = View.VISIBLE
+        rememberCheckBox.visibility = View.VISIBLE
         loginEditText.visibility = View.GONE
         emailEditText.visibility = View.GONE
         passwordRegEditText.visibility = View.GONE
