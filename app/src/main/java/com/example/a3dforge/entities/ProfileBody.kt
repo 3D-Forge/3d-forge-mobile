@@ -9,7 +9,7 @@ data class ProfileBody(
 ) {
     data class UserData(
         val login: String,
-        val email: String,
+        val email: String?,
         @SerializedName("phoneNumber")
         val phone: String?,
         val firstName: String?,

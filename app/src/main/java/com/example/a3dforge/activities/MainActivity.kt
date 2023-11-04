@@ -9,6 +9,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 class MainActivity : AppCompatActivity() {
 
     private lateinit var bottomNavigationView: BottomNavigationView
+    var userLogin: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -16,7 +17,7 @@ class MainActivity : AppCompatActivity() {
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView)
 
-        val userLogin = intent.getStringExtra("user_login")
+        userLogin = intent.getStringExtra("user_login")
 
         bottomNavigationView.setOnItemSelectedListener { item ->
             var selectedFragment: Fragment? = null
@@ -43,5 +44,13 @@ class MainActivity : AppCompatActivity() {
 
             true
         }
+    }
+
+    fun updateLogin(newLogin: String) {
+        userLogin = newLogin
+    }
+
+    fun getUserLoginValue(): String {
+        return userLogin!!
     }
 }

@@ -5,10 +5,18 @@ import android.util.Log
 import com.example.a3dforge.entities.ProfileBody
 import com.example.a3dforge.entities.SignInRequestBody
 import com.example.a3dforge.entities.SignUpRequestBody
+import okhttp3.HttpUrl
+import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
+import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
 import okhttp3.Request
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
+import java.io.File
 import java.io.IOException
 
 class ApiManager(private val okHttpConfig: OkHttpConfig) {
@@ -112,7 +120,33 @@ class ApiManager(private val okHttpConfig: OkHttpConfig) {
         return null
     }
 
-    fun getAvatar(userLogin: String): String? {
+    fun changeProfile(querry: JSONObject, userLogin: String) {
+        val jsonRequestBody = querry.toString()
+        val requestBody = jsonRequestBody.toRequestBody("application/json".toMediaTypeOrNull())
+        val url = OkHttpConfig.baseUrl + "update/info"
+        val httpUrl = url.toHttpUrlOrNull()?.newBuilder()
+            ?.addQueryParameter("login", userLogin)
+            ?.build()
+        val request = Request.Builder()
+            .url(httpUrl!!)
+            .put(requestBody)
+            .build()
+        try {
+            val response = okHttpConfig.client.newCall(request).execute()
+            val responseBody = response.body
+            if (response.isSuccessful) {
+                val responseData = response.body?.string()
+                responseBody?.close()
+            } else {
+                Log.e("ApiManager", "Unsuccessful response: ${response.code}")
+                responseBody?.close()
+            }
+        } catch (e: IOException) {
+            Log.e("ApiManager", "Network error", e)
+        }
+    }
+
+    fun getAvatar(userLogin: String): ByteArray? {
         val request = Request.Builder()
             .get()
             .url(okHttpConfig.baseUrl + userLogin + "/avatar")
@@ -123,8 +157,7 @@ class ApiManager(private val okHttpConfig: OkHttpConfig) {
             val responseBody = response.body
 
             if (response.isSuccessful) {
-                val responseData = responseBody?.string()
-                println(responseData)
+                val responseData = responseBody?.bytes()
                 responseBody?.close()
                 return responseData
             } else {
@@ -136,6 +169,34 @@ class ApiManager(private val okHttpConfig: OkHttpConfig) {
             Log.e("ApiManager", "Network error", e)
             return null
         }
+    }
+
+    fun uploadAvatar(userLogin: String, file: File){
+        val requestBody = MultipartBody.Builder()
+            .setType(MultipartBody.FORM)
+            .addFormDataPart("userAvatarFile", file.name, file.asRequestBody("image/png".toMediaTypeOrNull()))
+            .addFormDataPart("login", userLogin)
+            .build()
+
+        val request = Request.Builder()
+            .url(OkHttpConfig.baseUrl + "update/avatar")
+            .put(requestBody)
+            .build()
+
+        try {
+            val response = okHttpConfig.client.newCall(request).execute()
+            val responseBody = response.body
+
+            if (response.isSuccessful) {
+                responseBody?.close()
+            } else {
+                Log.e("ApiManager", "Unsuccessful response: ${response.code}")
+                responseBody?.close()
+            }
+        } catch (e: IOException) {
+            Log.e("ApiManager", "Network error", e)
+        }
+
     }
 
 

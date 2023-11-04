@@ -12,9 +12,9 @@ import kotlinx.coroutines.withContext
 
 class AvatarViewModel(private val okHttpConfig: OkHttpConfig, private val userLogin: String) : ViewModel() {
 
-    private val _avatarResult = MutableLiveData<Pair<Boolean, String?>>()
+    private val _avatarResult = MutableLiveData<Pair<Boolean, ByteArray?>>()
 
-    val avatarResult: LiveData<Pair<Boolean, String?>>
+    val avatarResult: LiveData<Pair<Boolean, ByteArray?>>
         get() = _avatarResult
 
     fun getAvatar() {
