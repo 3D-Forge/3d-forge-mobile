@@ -2,22 +2,22 @@ package com.example.a3dforge.base
 
 import OkHttpConfig
 import android.util.Log
-import com.example.a3dforge.entities.ProfileBody
+import com.example.a3dforge.entities.CatalogGetRequestBody
+import com.example.a3dforge.entities.ProfileRequestBody
 import com.example.a3dforge.entities.SignInRequestBody
-import com.example.a3dforge.entities.SignUpRequestBody
+import com.google.gson.Gson
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
-import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.Request
-import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
 import java.io.File
 import java.io.IOException
+
 
 class ApiManager(private val okHttpConfig: OkHttpConfig) {
 
@@ -28,7 +28,7 @@ class ApiManager(private val okHttpConfig: OkHttpConfig) {
 
         val request = Request.Builder()
             .post(okHttpRequestBody)
-            .url(okHttpConfig.baseUrl + "login")
+            .url(okHttpConfig.baseUserUrl + "login")
             .build()
 
         try {
@@ -51,34 +51,10 @@ class ApiManager(private val okHttpConfig: OkHttpConfig) {
         }
     }
 
-    fun registerUser(login: String, email: String, password: String, confirmPassword: String): Boolean {
-        val requestBody = SignUpRequestBody(login, email, password, confirmPassword)
-        val registerRequestBodyString = okHttpConfig.gson.toJson(requestBody)
-        val okHttpRequestBody = registerRequestBodyString.toRequestBody(contentType)
-
-        val request = Request.Builder()
-            .post(okHttpRequestBody)
-            .url(okHttpConfig.baseUrl + "register")
-            .build()
-
-        try {
-            val response = okHttpConfig.client.newCall(request).execute()
-            if (response.isSuccessful) {
-                return true
-            } else {
-                Log.e("ApiManager", "Unsuccessful response: ${response.code}")
-                return false
-            }
-        } catch (e: IOException) {
-            Log.e("ApiManager", "Network error", e)
-            return false
-        }
-    }
-
-    fun getProfile(userLogin: String): ProfileBody? {
+    fun getProfile(userLogin: String): ProfileRequestBody? {
         val request = Request.Builder()
             .get()
-            .url(okHttpConfig.baseUrl + userLogin + "/info")
+            .url(okHttpConfig.baseUserUrl + userLogin + "/info")
             .build()
 
         try {
@@ -90,7 +66,7 @@ class ApiManager(private val okHttpConfig: OkHttpConfig) {
                 responseBody?.close()
                 responseData?.let {
                     val jsonObject = JSONObject(it)
-                    val userData = ProfileBody.UserData(
+                    val userData = ProfileRequestBody.UserData(
                         login = jsonObject.getJSONObject("data").getString("login"),
                         email = jsonObject.getJSONObject("data").getString("email"),
                         phone = jsonObject.getJSONObject("data").optString("phoneNumber"),
@@ -106,7 +82,7 @@ class ApiManager(private val okHttpConfig: OkHttpConfig) {
                         departmentNumber = jsonObject.getJSONObject("data").optString("departmentNumber"),
                         deliveryType = jsonObject.getJSONObject("data").optString("deliveryType")
                     )
-                    return ProfileBody(response.isSuccessful, null, userData)
+                    return ProfileRequestBody(response.isSuccessful, null, userData)
                 }
             } else {
                 Log.e("ApiManager", "Unsuccessful response: ${response.code}")
@@ -123,7 +99,7 @@ class ApiManager(private val okHttpConfig: OkHttpConfig) {
     fun changeProfile(querry: JSONObject, userLogin: String) {
         val jsonRequestBody = querry.toString()
         val requestBody = jsonRequestBody.toRequestBody("application/json".toMediaTypeOrNull())
-        val url = OkHttpConfig.baseUrl + "update/info"
+        val url = OkHttpConfig.baseUserUrl + "update/info"
         val httpUrl = url.toHttpUrlOrNull()?.newBuilder()
             ?.addQueryParameter("login", userLogin)
             ?.build()
@@ -149,7 +125,7 @@ class ApiManager(private val okHttpConfig: OkHttpConfig) {
     fun getAvatar(userLogin: String): ByteArray? {
         val request = Request.Builder()
             .get()
-            .url(okHttpConfig.baseUrl + userLogin + "/avatar")
+            .url(okHttpConfig.baseUserUrl + userLogin + "/avatar")
             .build()
 
         try {
@@ -179,7 +155,7 @@ class ApiManager(private val okHttpConfig: OkHttpConfig) {
             .build()
 
         val request = Request.Builder()
-            .url(OkHttpConfig.baseUrl + "update/avatar")
+            .url(OkHttpConfig.baseUserUrl + "update/avatar")
             .put(requestBody)
             .build()
 
@@ -197,6 +173,76 @@ class ApiManager(private val okHttpConfig: OkHttpConfig) {
             Log.e("ApiManager", "Network error", e)
         }
 
+    }
+
+    fun getAllModels(q: String?, categories: Array<String>?, keywords: Array<String>?, sort_parameter: String?, sort_direction: String?, min_price: Double?, max_price: Double?, min_rating: Float?, max_rating: Float?, author: String?, page: Int?, page_size: Int?): CatalogGetRequestBody? {
+        val builder = (okHttpConfig.baseCatalogUrl + "/search").toHttpUrlOrNull()?.newBuilder()
+
+        q?.let { builder?.addQueryParameter("q", it) }
+        categories?.let { categoriesList ->
+            categoriesList.forEach { index ->
+                builder?.addQueryParameter("categories", index)
+            }
+        }
+        keywords?.let { builder?.addQueryParameter("keywords", it.joinToString(",")) }
+        sort_parameter?.let { builder?.addQueryParameter("sort_parameter", it) }
+        sort_direction?.let { builder?.addQueryParameter("sort_direction", it) }
+        min_price?.let { builder?.addQueryParameter("min_price", it.toString()) }
+        max_price?.let { builder?.addQueryParameter("max_price", it.toString()) }
+        min_rating?.let { builder?.addQueryParameter("min_rating", it.toString()) }
+        max_rating?.let { builder?.addQueryParameter("max_rating", it.toString()) }
+        author?.let { builder?.addQueryParameter("author", it) }
+        page?.let { builder?.addQueryParameter("page", it.toString()) }
+        page_size?.let { builder?.addQueryParameter("page_size", it.toString()) }
+
+        val request = Request.Builder()
+            .get()
+            .url(builder?.build() ?: return null)
+            .build()
+        try {
+            val response = okHttpConfig.client.newCall(request).execute()
+            val responseBody = response.body
+
+            if (response.isSuccessful) {
+                val responseData = responseBody?.string()
+                val gson = Gson()
+                val data = gson.fromJson(responseData, CatalogGetRequestBody::class.java)
+                responseBody?.close()
+                return data
+            } else {
+                Log.e("ApiManager", "Unsuccessful response: ${response.code}")
+                responseBody?.close()
+                return null
+            }
+        } catch (e: IOException) {
+            Log.e("ApiManager", "Network error", e)
+            return null
+        }
+    }
+
+    fun getProductPicture(pictureId: Int): ByteArray?{
+        val request = Request.Builder()
+            .get()
+            .url(okHttpConfig.baseCatalogUrl + "/model/picture/${pictureId}")
+            .build()
+
+        try {
+            val response = okHttpConfig.client.newCall(request).execute()
+            val responseBody = response.body
+
+            if (response.isSuccessful) {
+                val responseData = responseBody?.bytes()
+                responseBody?.close()
+                return responseData
+            } else {
+                Log.e("ApiManager", "Unsuccessful response: ${response.code}")
+                responseBody?.close()
+                return null
+            }
+        } catch (e: IOException) {
+            Log.e("ApiManager", "Network error", e)
+            return null
+        }
     }
 
 

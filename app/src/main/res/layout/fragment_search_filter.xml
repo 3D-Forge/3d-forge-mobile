@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".activities.SearchFilterFragment">
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="28dp"
+        android:text="Розміри"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/categoriesButt5" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/categoriesButt5"
+        android:layout_width="match_parent"
+        android:layout_height="47dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/black_border_button"
+        android:paddingStart="50dp"
+        android:text="Публікатори"
+        android:textAlignment="textStart"
+        android:textAllCaps="false"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/categoriesButt4" />
+
+    <ImageView
+        android:id="@+id/imageView16"
+        android:layout_width="42dp"
+        android:layout_marginTop="4dp"
+        android:layout_height="38dp"
+        android:layout_marginEnd="12dp"
+        android:src="@drawable/ic_keyboard_arrow_down"
+        app:layout_constraintEnd_toEndOf="@+id/categoriesButt5"
+        app:layout_constraintTop_toTopOf="@+id/categoriesButt5" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/categoriesButt4"
+        android:layout_width="match_parent"
+        android:layout_height="47dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/black_border_button"
+        android:paddingStart="50dp"
+        android:text="Категорії"
+        android:textAlignment="textStart"
+        android:textAllCaps="false"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sliderRange" />
+
+    <EditText
+        android:id="@+id/maxPriceEditText"
+        android:imeOptions="actionDone"
+        android:layout_width="171dp"
+        android:layout_height="31dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/edittext_border"
+        android:ems="10"
+        android:inputType="number"
+        android:text="20000"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+    <ImageView
+        android:id="@+id/closeImageView"
+        android:layout_width="33dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="32dp"
+        android:src="@drawable/ic_close"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="32dp"
+        android:text="Фільтри"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@+id/closeImageView"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView14"
+        android:layout_width="37dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="204dp"
+        android:layout_marginTop="32dp"
+        android:src="@drawable/ic_filter_black"
+        app:layout_constraintStart_toEndOf="@+id/textView6"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="32dp"
+        android:text="Ціна"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
+    <EditText
+        android:id="@+id/minPriceEditText"
+        android:layout_width="171dp"
+        android:imeOptions="actionDone"
+        android:layout_height="31dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/edittext_border"
+        android:ems="10"
+        android:inputType="number"
+        android:text="100"
+        android:textAlignment="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+    <com.google.android.material.slider.RangeSlider
+        android:id="@+id/sliderRange"
+        style="@style/CustomRangeSlider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="28dp"
+        android:valueFrom="100"
+        android:valueTo="20000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/minPriceEditText"
+        app:values="@array/rangeSlider"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/categoriesButt"
+        android:layout_width="match_parent"
+        android:layout_height="47dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/black_border_button"
+        android:paddingStart="50dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginEnd="16dp"
+        android:text="Категорії"
+        android:textAlignment="textStart"
+        android:textAllCaps="false"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sliderRange" />
+
+    <ImageView
+        android:id="@+id/imageView13"
+        android:layout_width="29dp"
+        android:layout_height="26dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
+        android:src="@drawable/ic_checklist"
+        app:layout_constraintStart_toStartOf="@+id/categoriesButt"
+        app:layout_constraintTop_toTopOf="@+id/categoriesButt" />
+
+    <ImageView
+        android:id="@+id/imageView15"
+        android:layout_width="42dp"
+        android:layout_marginTop="4dp"
+        android:layout_height="38dp"
+        android:layout_marginEnd="12dp"
+        android:src="@drawable/ic_keyboard_arrow_down"
+        app:layout_constraintEnd_toEndOf="@+id/categoriesButt"
+        app:layout_constraintTop_toTopOf="@+id/categoriesButt" />
+
+    <ImageView
+        android:id="@+id/imageView17"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_format_list_bulleted"
+        app:layout_constraintStart_toStartOf="@+id/categoriesButt5"
+        app:layout_constraintTop_toTopOf="@+id/categoriesButt5" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

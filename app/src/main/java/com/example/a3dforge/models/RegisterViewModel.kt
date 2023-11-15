@@ -27,7 +27,7 @@ class RegisterViewModel(private val okHttpConfig: OkHttpConfig) : ViewModel() {
 
         val request = Request.Builder()
             .post(okHttpRequestBody)
-            .url(okHttpConfig.baseUrl + "register")
+            .url(okHttpConfig.baseUserUrl + "register")
             .build()
 
         try {

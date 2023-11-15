@@ -30,6 +30,9 @@ class MainActivity : AppCompatActivity() {
                     args.putString("userLogin", userLogin)
                     selectedFragment.arguments = args
                 }
+                R.id.book -> {
+                    selectedFragment = CatalogFragment()
+                }
             }
 
             if (selectedFragment != null) {

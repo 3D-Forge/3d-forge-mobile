@@ -3,7 +3,6 @@ package com.example.a3dforge.activities
 import OkHttpConfig
 import android.content.Intent
 import android.graphics.Paint
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -12,12 +11,15 @@ import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.a3dforge.R
 import com.example.a3dforge.factories.AuthRegisterViewModelFactory
+import com.example.a3dforge.factories.CatalogSearchViewModelFactory
 import com.example.a3dforge.models.AuthViewModel
+import com.example.a3dforge.models.CatalogSearchViewModel
 import com.example.a3dforge.models.RegisterViewModel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -89,7 +91,6 @@ class AuthRegisterActivity : AppCompatActivity() {
                 Toast.makeText(this, "Неправильна пошта, логін чи пароль!", Toast.LENGTH_SHORT).show()
             }
         })
-
 
         authButton.setOnClickListener {
             val loginOrEmail = loginEmailEditText.text.toString()

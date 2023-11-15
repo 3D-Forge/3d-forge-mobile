@@ -2,16 +2,11 @@ package com.example.a3dforge.activities
 
 import OkHttpConfig
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.Canvas
 import android.graphics.Color
-import android.graphics.Matrix
 import android.graphics.Paint
-import android.graphics.Rect
-import android.graphics.RectF
 import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
@@ -31,7 +26,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.a3dforge.R
 import com.example.a3dforge.base.AvatarProcessor
-import com.example.a3dforge.entities.ProfileBody
+import com.example.a3dforge.entities.ProfileRequestBody
 import com.example.a3dforge.factories.AvatarViewModelFactory
 import com.example.a3dforge.factories.ChangeProfileViewModelFactory
 import com.example.a3dforge.factories.ProfileViewModelFactory
@@ -42,8 +37,6 @@ import com.example.a3dforge.models.ProfileViewModel
 import com.example.a3dforge.models.UploadAvatarViewModel
 import org.json.JSONObject
 import java.io.File
-import java.lang.Float.min
-import kotlin.math.min
 
 
 class EditProfileFragment : Fragment() {
@@ -68,7 +61,6 @@ class EditProfileFragment : Fragment() {
     private lateinit var choosePhotoButton: Button
     private lateinit var avatarImageView: ImageView
 
-    private val PICK_IMAGE_REQUEST = 1
     private lateinit var filePicker: ActivityResultLauncher<Intent>
 
     override fun onCreateView(
@@ -207,9 +199,9 @@ class EditProfileFragment : Fragment() {
             val imageBitmap: Bitmap =
                 imageBytes?.let { BitmapFactory.decodeByteArray(imageBytes, 0, it.size) }!!
 
-            val imageProcessor = AvatarProcessor()
-            val avatarWithBorder = imageProcessor.addBorderWithScale(imageBitmap, 30, Color.WHITE, 0.8f)
-            avatarImageView.setImageBitmap(avatarWithBorder)
+/*            val imageProcessor = AvatarProcessor()
+            val avatarWithBorder = imageProcessor.addBorderWithScale(imageBitmap, 30, Color.WHITE, 0.8f)*/
+            avatarImageView.setImageBitmap(imageBitmap)
         }
 
         profileViewModel.getProfile()
@@ -221,7 +213,7 @@ class EditProfileFragment : Fragment() {
             userLoginEditTextView.text = nicknameEditText.text.toString()
 
             val words = fullNameEditProfileEditText.text.split(" ")
-            val userData = ProfileBody.UserData(
+            val userData = ProfileRequestBody.UserData(
                 login = nicknameEditText.text.toString(),
                 email = null,
                 phone = phoneNumberEditText.text.toString(),

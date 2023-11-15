@@ -6,7 +6,8 @@ import okhttp3.logging.HttpLoggingInterceptor
 
 object OkHttpConfig {
     val cookieJar = Cookies()
-    val baseUrl = "https://192.168.0.102:44416/api/user/"
+    val baseUserUrl = "https://192.168.0.102:44416/api/user/"
+    val baseCatalogUrl = "https://192.168.0.102:44416/api/catalog"
     val client: OkHttpClient = OkHttpClient.Builder()
         .cookieJar(cookieJar)
         .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))

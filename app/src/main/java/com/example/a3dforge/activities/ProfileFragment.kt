@@ -18,7 +18,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.a3dforge.R
 import com.example.a3dforge.base.AvatarProcessor
-import com.example.a3dforge.entities.ProfileBody
 import com.example.a3dforge.factories.AvatarViewModelFactory
 import com.example.a3dforge.factories.ProfileViewModelFactory
 import com.example.a3dforge.models.AvatarViewModel
@@ -58,18 +57,6 @@ class ProfileFragment : Fragment() {
         addressInfoTextView.paintFlags = addressInfoTextView.paintFlags or Paint.UNDERLINE_TEXT_FLAG
 
         val userLogin = (requireActivity() as MainActivity).getUserLoginValue()
-
-        println(userLogin)
-        println(userLogin)
-        println(userLogin)
-        println(userLogin)
-        println(userLogin)
-        println(userLogin)
-        println(userLogin)
-        println(userLogin)
-        println(userLogin)
-        println(userLogin)
-        println(userLogin)
 
         val okHttpConfig = OkHttpConfig
 
@@ -119,10 +106,10 @@ class ProfileFragment : Fragment() {
             val imageBitmap: Bitmap =
                 imageBytes?.let { BitmapFactory.decodeByteArray(imageBytes, 0, it.size) }!!
 
-            val imageProcessor = AvatarProcessor()
-            val avatarWithBorder = imageProcessor.addBorderWithScale(imageBitmap, 30, Color.WHITE, 0.8f)
+/*            val imageProcessor = AvatarProcessor()
+            val avatarWithBorder = imageProcessor.addBorderWithScale(imageBitmap, 30, Color.WHITE, 0.8f)*/
             val imageView: ImageView = view.findViewById(R.id.avatarImageView)
-            imageView.setImageBitmap(avatarWithBorder)
+            imageView.setImageBitmap(imageBitmap)
         }
 
         profileViewModel.getProfile()
@@ -135,7 +122,6 @@ class ProfileFragment : Fragment() {
         }
 
         editProfileImageView.setOnClickListener{
-
             val editProfileFragment = EditProfileFragment()
 
             val args = Bundle()

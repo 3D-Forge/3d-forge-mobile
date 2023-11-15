@@ -2,7 +2,7 @@ package com.example.a3dforge.entities
 
 import com.google.gson.annotations.SerializedName
 
-data class ProfileBody(
+data class ProfileRequestBody(
     val success: Boolean,
     val message: String?,
     val data: UserData
