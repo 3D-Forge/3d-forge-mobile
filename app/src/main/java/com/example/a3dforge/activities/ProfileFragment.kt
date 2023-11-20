@@ -4,7 +4,6 @@ import OkHttpConfig
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.Color
 import android.graphics.Paint
 import android.os.Bundle
 import android.text.Editable
@@ -17,7 +16,6 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.a3dforge.R
-import com.example.a3dforge.base.AvatarProcessor
 import com.example.a3dforge.factories.AvatarViewModelFactory
 import com.example.a3dforge.factories.ProfileViewModelFactory
 import com.example.a3dforge.models.AvatarViewModel

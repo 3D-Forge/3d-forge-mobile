@@ -8,25 +8,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
-import android.widget.Spinner
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.a3dforge.R
-import com.example.a3dforge.entities.CatalogGetRequestBody
-import com.example.a3dforge.entities.FilterParametersBody
-import com.example.a3dforge.factories.CatalogSearchViewModelFactory
+import com.example.a3dforge.factories.CategoriesViewModelFactory
 import com.example.a3dforge.factories.ProductPictureViewModelFactory
-import com.example.a3dforge.models.CatalogSearchViewModel
+import com.example.a3dforge.models.CategoriesViewModel
 import com.example.a3dforge.models.ProductPictureViewModel
 import com.example.a3dforge.models.SharedViewModel
 import com.google.android.material.slider.RangeSlider
@@ -52,10 +46,10 @@ class SearchFilterFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        val arrayList = ArrayList<String>()
+        var categoriesList = ArrayList<String>()
 
         checkedItems = savedInstanceState?.getBooleanArray(CHECKED_ITEMS_KEY)?.toMutableList()
-            ?: MutableList(arrayList.size) { false }
+            ?: MutableList(categoriesList.size) { false }
 
         val view = inflater.inflate(R.layout.fragment_search_filter, container, false)
 
@@ -128,45 +122,25 @@ class SearchFilterFragment : Fragment() {
 
         val okHttpConfig = OkHttpConfig
 
-        val catalogSearchViewModel = ViewModelProvider(this, CatalogSearchViewModelFactory(okHttpConfig))
-            .get(CatalogSearchViewModel::class.java)
+        val categoriesViewModel = ViewModelProvider(this, CategoriesViewModelFactory(okHttpConfig))
+            .get(CategoriesViewModel::class.java)
 
-        catalogSearchViewModel.profileResult.observe(viewLifecycleOwner, Observer { result  ->
-            result.second?.let {
-                for (i in result.second!!.data.items) {
-                    for ( j in i.categoryes){
-                        arrayList.add(j.name)
-                    }
-                }
-            }
+        categoriesViewModel.categoriesResult.observe(viewLifecycleOwner, Observer { result ->
+            categoriesList = (result?.data?.map { it.name } ?: emptyList()) as ArrayList<String>
         })
 
-        catalogSearchViewModel.getCatalog(null,null,null,null,null, null,null,null,null,null,null,null)
+        categoriesViewModel.getCategory()
 
         categoriesButt.setOnClickListener {
             val builder = AlertDialog.Builder(requireContext())
             builder.setTitle("Select Categories")
 
-            val checkedItems = BooleanArray(arrayList.size)
-            builder.setMultiChoiceItems(arrayList.toTypedArray(), checkedItems) { _, _, _ -> }
+            val checkedItems = BooleanArray(categoriesList.size)
+            builder.setMultiChoiceItems(categoriesList.toTypedArray(), checkedItems) { _, _, _ -> }
 
             builder.setPositiveButton("OK") { _, _ ->
                 val selectedIndices = checkedItems.indices.filter { index -> checkedItems[index] }
                 sharedViewModel.filterParameters.categories = selectedIndices.map { it.toString() }.toTypedArray()
-                catalogSearchViewModel.getCatalog(
-                    null,
-                    sharedViewModel.filterParameters.categories,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null
-                )
             }
 
             builder.setNegativeButton("Cancel") { dialog, _ -> dialog.dismiss() }

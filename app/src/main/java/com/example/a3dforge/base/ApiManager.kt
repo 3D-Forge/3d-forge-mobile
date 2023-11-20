@@ -3,10 +3,10 @@ package com.example.a3dforge.base
 import OkHttpConfig
 import android.util.Log
 import com.example.a3dforge.entities.CatalogGetRequestBody
+import com.example.a3dforge.entities.CategoriesGetRequestBody
 import com.example.a3dforge.entities.ProfileRequestBody
 import com.example.a3dforge.entities.SignInRequestBody
 import com.google.gson.Gson
-import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -175,6 +175,58 @@ class ApiManager(private val okHttpConfig: OkHttpConfig) {
 
     }
 
+    fun uploadModel(name: String, desc: String, depth: String, keywords: Array<String>?, categories: Array<Int>, files: Array<File>) {
+        val url = (okHttpConfig.baseCatalogUrl).toHttpUrlOrNull()
+
+        val requestBodyBuilder = MultipartBody.Builder().setType(MultipartBody.FORM)
+
+        name.let { requestBodyBuilder.addFormDataPart("Name", it) }
+        desc.let { requestBodyBuilder.addFormDataPart("Description", it) }
+        depth.let { requestBodyBuilder.addFormDataPart("Depth", it) }
+
+        keywords?.let { keywordsArray ->
+            keywordsArray.forEach {
+                requestBodyBuilder.addFormDataPart("Keywords", it)
+            }
+        }
+
+        categories.let { categoriesArray ->
+            categoriesArray.forEach { category ->
+                requestBodyBuilder.addFormDataPart("Categories", category.toString())
+            }
+        }
+
+        files.forEach { file ->
+            val requestBody = file.asRequestBody()
+            if (file.extension != "png"){
+                requestBodyBuilder.addFormDataPart("files", file.name, requestBody)
+            }
+            else{
+                requestBodyBuilder.addFormDataPart("files", file.name, file.asRequestBody("image/png".toMediaTypeOrNull()))
+            }
+        }
+
+
+        val request = Request.Builder()
+            .url(url!!)
+            .post(requestBodyBuilder.build())
+            .build()
+
+        try {
+            val response = okHttpConfig.client.newCall(request).execute()
+            val responseBody = response.body
+
+            if (response.isSuccessful) {
+                responseBody?.close()
+            } else {
+                Log.e("ApiManager", "Unsuccessful response: ${response.code}")
+                responseBody?.close()
+            }
+        } catch (e: IOException) {
+            Log.e("ApiManager", "Network error", e)
+        }
+    }
+
     fun getAllModels(q: String?, categories: Array<String>?, keywords: Array<String>?, sort_parameter: String?, sort_direction: String?, min_price: Double?, max_price: Double?, min_rating: Float?, max_rating: Float?, author: String?, page: Int?, page_size: Int?): CatalogGetRequestBody? {
         val builder = (okHttpConfig.baseCatalogUrl + "/search").toHttpUrlOrNull()?.newBuilder()
 
@@ -245,6 +297,32 @@ class ApiManager(private val okHttpConfig: OkHttpConfig) {
         }
     }
 
+    fun getCategories() : CategoriesGetRequestBody? {
+        val request = Request.Builder()
+            .get()
+            .url(okHttpConfig.baseCatalogUrl + "/categories")
+            .build()
+
+        try {
+            val response = okHttpConfig.client.newCall(request).execute()
+            val responseBody = response.body
+
+            if (response.isSuccessful) {
+                val responseData = responseBody?.string()
+                val gson = Gson()
+                val data = gson.fromJson(responseData, CategoriesGetRequestBody::class.java)
+                responseBody?.close()
+                return data
+            } else {
+                Log.e("ApiManager", "Unsuccessful response: ${response.code}")
+                responseBody?.close()
+                return null
+            }
+        } catch (e: IOException) {
+            Log.e("ApiManager", "Network error", e)
+            return null
+        }
+    }
 
     companion object {
         val contentType = "application/json; charset=utf-8".toMediaType()

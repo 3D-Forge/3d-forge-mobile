@@ -15,10 +15,41 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <Spinner
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/resetFiltersButt"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_marginStart="204dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/round_btn_circled"
+                android:paddingStart="20dp"
+                android:text="Скинути фільтри"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/sortSpinner" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/addNewModelButton"
+                android:layout_width="170dp"
+                android:layout_height="35dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/round_btn_circled"
+                android:text="Додати модель"
+                android:paddingStart="20dp"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/filterButton" />
+
+            <com.example.a3dforge.base.NDSpinner
                 android:id="@+id/sortSpinner"
                 android:layout_width="match_parent"
-                android:layout_height="34dp"
+                android:layout_height="35dp"
                 android:layout_marginStart="148dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="20dp"
@@ -96,7 +127,7 @@
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/filterButton"
                 android:layout_width="108dp"
-                android:layout_height="34dp"
+                android:layout_height="35dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/round_btn_circled"
@@ -112,11 +143,13 @@
                 android:id="@+id/rcView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="20dp"
+                app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/filterButton" />
+                app:layout_constraintTop_toBottomOf="@+id/addNewModelButton"
+                app:layout_constraintVertical_bias="0.0" />
 
             <ImageView
                 android:id="@+id/imageView12"
@@ -130,13 +163,34 @@
                 app:layout_constraintTop_toTopOf="@+id/filterButton" />
 
             <ImageView
-                android:id="@+id/imageView10"
+                android:id="@+id/sortIndexImageView"
                 android:layout_width="38dp"
                 android:layout_height="37dp"
                 android:src="@drawable/ic_keyboard_arrow_down_white"
                 app:layout_constraintTop_toTopOf="@+id/sortSpinner"
                 app:layout_constraintStart_toStartOf="@id/sortSpinner"
                 tools:layout_editor_absoluteX="148dp" />
+
+            <ImageView
+                android:id="@+id/imageView10"
+                android:layout_width="33dp"
+                android:layout_height="35dp"
+                android:elevation="8dp"
+                android:layout_marginStart="4dp"
+                android:src="@drawable/ic_add"
+                app:layout_constraintStart_toStartOf="@+id/addNewModelButton"
+                app:layout_constraintTop_toTopOf="@+id/addNewModelButton" />
+
+            <ImageView
+                android:id="@+id/imageView18"
+                android:layout_width="34dp"
+                android:layout_height="32dp"
+                android:elevation="8dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="2dp"
+                android:src="@drawable/ic_repeat"
+                app:layout_constraintStart_toStartOf="@+id/resetFiltersButt"
+                app:layout_constraintTop_toTopOf="@+id/resetFiltersButt" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

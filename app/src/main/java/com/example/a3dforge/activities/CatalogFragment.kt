@@ -4,16 +4,15 @@ import OkHttpConfig
 import android.graphics.Rect
 import android.os.Bundle
 import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
-import android.widget.Spinner
-import android.widget.TextView.OnEditorActionListener
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -22,6 +21,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.a3dforge.R
 import com.example.a3dforge.adapter.ProductAdapter
+import com.example.a3dforge.base.NDSpinner
 import com.example.a3dforge.factories.CatalogSearchViewModelFactory
 import com.example.a3dforge.models.CatalogSearchViewModel
 import com.example.a3dforge.models.SharedViewModel
@@ -33,8 +33,11 @@ class CatalogFragment : Fragment() {
     private lateinit var searchEditText: EditText
     private lateinit var searchButton: Button
     private lateinit var filterButton: Button
+    private lateinit var resetFiltersButt: Button
+    private lateinit var addNewModelButton: Button
     private lateinit var adapter: ProductAdapter
-    private lateinit var sortSpinner: Spinner
+    private lateinit var sortSpinner: NDSpinner
+    private lateinit var sortIndexImageView: ImageView
 
     private val sharedViewModel: SharedViewModel by activityViewModels()
 
@@ -44,31 +47,13 @@ class CatalogFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_catalog, container, false)
 
-        println(sharedViewModel.filterParameters)
-        println(sharedViewModel.filterParameters)
-        println(sharedViewModel.filterParameters)
-        println(sharedViewModel.filterParameters)
-        println(sharedViewModel.filterParameters)
-        println(sharedViewModel.filterParameters)
-
         searchEditText = view.findViewById(R.id.searchEditText)
         searchButton = view.findViewById(R.id.searchButton)
         filterButton = view.findViewById(R.id.filterButton)
+        resetFiltersButt = view.findViewById(R.id.resetFiltersButt)
+        addNewModelButton = view.findViewById(R.id.addNewModelButton)
         rcView = view.findViewById(R.id.rcView)
-
-        sortSpinner = view.findViewById(R.id.sortSpinner)
-        val sortItems = listOf("Спочатку популярні", "Спочатку Дешеві", "Спочатку Дорогі", "За Оцінкою")
-        val arrayAdapter = ArrayAdapter(requireActivity(), R.layout.spinner_item, sortItems)
-        sortSpinner.adapter = arrayAdapter
-
-        adapter = ProductAdapter(requireActivity())
-        val spanCount = 2
-        rcView.layoutManager = GridLayoutManager(this.requireContext(), spanCount)
-
-        val spacingInPixels = resources.getDimensionPixelSize(R.dimen.spacing)
-        rcView.addItemDecoration(GridSpacingItemDecoration(spanCount, spacingInPixels, true))
-
-        rcView.adapter = adapter
+        sortIndexImageView = view.findViewById(R.id.sortIndexImageView)
 
         val okHttpConfig = OkHttpConfig
 
@@ -82,12 +67,130 @@ class CatalogFragment : Fragment() {
             }
         })
 
+        sortSpinner = view.findViewById(R.id.sortSpinner)
+        val sortItems = listOf("За назвою", "За ціною", "За рейтингом")
+        val arrayAdapter = ArrayAdapter(requireActivity(), R.layout.spinner_item, sortItems)
+        sortSpinner.adapter = arrayAdapter
+
+        sortIndexImageView.rotation = 180F
+
+        sortSpinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
+            var sortDirectionAsc = true
+
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
+                if (position == 0) {
+                    sharedViewModel.filterParameters.sortParameter = "name"
+
+                    sharedViewModel.filterParameters.sortDirection =
+                        if (sortDirectionAsc) {
+                            "asc"
+                        } else {
+                            "desc"
+                        }
+
+                    sortDirectionAsc = !sortDirectionAsc
+                }
+                if (position == 1) {
+                    sharedViewModel.filterParameters.sortParameter = "price"
+
+                    sharedViewModel.filterParameters.sortDirection =
+                        if (sortDirectionAsc) {
+                            "asc"
+                        } else {
+                            "desc"
+                        }
+
+                    sortDirectionAsc = !sortDirectionAsc
+                }
+                if (position == 2) {
+                    sharedViewModel.filterParameters.sortParameter = "rating"
+
+                    sharedViewModel.filterParameters.sortDirection =
+                        if (sortDirectionAsc) {
+                            "asc"
+                        } else {
+                            "desc"
+                        }
+
+                    sortDirectionAsc = !sortDirectionAsc
+                }
+
+                catalogSearchViewModel.getCatalog(
+                    sharedViewModel.filterParameters.q,
+                    sharedViewModel.filterParameters.categories,
+                    null,
+                    sharedViewModel.filterParameters.sortParameter,
+                    sharedViewModel.filterParameters.sortDirection,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+                )
+
+                sortIndexImageView.rotation += 180F
+            }
+
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+
+            }
+        })
+
+        resetFiltersButt.setOnClickListener{
+            sharedViewModel.filterParameters.q = null
+            sharedViewModel.filterParameters.categories = null
+            sharedViewModel.filterParameters.pageSize = null
+            sharedViewModel.filterParameters.page = null
+            sharedViewModel.filterParameters.author = null
+            sharedViewModel.filterParameters.keywords = null
+            sharedViewModel.filterParameters.minRating = null
+            sharedViewModel.filterParameters.maxRating = null
+            sharedViewModel.filterParameters.minPrice = null
+            sharedViewModel.filterParameters.maxPrice = null
+            searchEditText.text = Editable.Factory.getInstance().newEditable("")
+            catalogSearchViewModel.getCatalog(
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+            )
+        }
+
+        addNewModelButton.setOnClickListener{
+            val newModelFragment = NewModelFragment()
+
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.fragment_container, newModelFragment)
+            transaction.addToBackStack(null)
+            transaction.commit()
+        }
+
+        adapter = ProductAdapter(requireActivity())
+        val spanCount = 2
+        rcView.layoutManager = GridLayoutManager(this.requireContext(), spanCount)
+
+        val spacingInPixels = resources.getDimensionPixelSize(R.dimen.spacing)
+        rcView.addItemDecoration(GridSpacingItemDecoration(spanCount, spacingInPixels, true))
+
+        rcView.adapter = adapter
+
         catalogSearchViewModel.getCatalog(
             sharedViewModel.filterParameters.q,
             sharedViewModel.filterParameters.categories,
             null,
-            null,
-            null,
+            sharedViewModel.filterParameters.sortParameter,
+            sharedViewModel.filterParameters.sortDirection,
             null,
             null,
             null,

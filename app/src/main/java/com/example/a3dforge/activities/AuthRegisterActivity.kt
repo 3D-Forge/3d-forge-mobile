@@ -6,6 +6,7 @@ import android.graphics.Paint
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
@@ -16,10 +17,9 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.a3dforge.R
+import com.example.a3dforge.base.PreferenceHelper
 import com.example.a3dforge.factories.AuthRegisterViewModelFactory
-import com.example.a3dforge.factories.CatalogSearchViewModelFactory
 import com.example.a3dforge.models.AuthViewModel
-import com.example.a3dforge.models.CatalogSearchViewModel
 import com.example.a3dforge.models.RegisterViewModel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -39,6 +39,8 @@ class AuthRegisterActivity : AppCompatActivity() {
     private lateinit var regButton: Button
     private lateinit var confirmationCheckBox: CheckBox
     private lateinit var rememberCheckBox: CheckBox
+
+    private lateinit var preferenceHelper: PreferenceHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,6 +85,9 @@ class AuthRegisterActivity : AppCompatActivity() {
             val (isSuccessful, login) = result
             if (isSuccessful) {
                 Toast.makeText(this, "Авторизація успішна!", Toast.LENGTH_SHORT).show()
+                if (rememberCheckBox.isChecked) {
+                    saveCredentials()
+                }
                 val intent = Intent(this, MainActivity::class.java)
                 intent.putExtra("user_login", login)
                 startActivity(intent)
@@ -97,6 +102,19 @@ class AuthRegisterActivity : AppCompatActivity() {
             val password = passwordEditText.text.toString()
 
             authViewModel.authenticateUser(loginOrEmail, password)
+
+        }
+
+        passwordEditText.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                val loginOrEmail = loginEmailEditText.text.toString()
+                val password = passwordEditText.text.toString()
+
+                authViewModel.authenticateUser(loginOrEmail, password)
+                true
+            } else {
+                false
+            }
         }
 
         val registerViewModel = ViewModelProvider(this, AuthRegisterViewModelFactory(okHttpConfig)).get(RegisterViewModel::class.java)
@@ -125,6 +143,26 @@ class AuthRegisterActivity : AppCompatActivity() {
                 }
             }
         }
+
+        preferenceHelper = PreferenceHelper(this)
+
+        val savedUserLogin = preferenceHelper.getSavedUserLogin()
+        val savedPassword = preferenceHelper.getSavedPassword()
+        val isRememberMeChecked = preferenceHelper.isRememberMeChecked()
+
+        rememberCheckBox.setOnCheckedChangeListener { _, isChecked ->
+            preferenceHelper.saveRememberMeChecked(isChecked)
+            if (!isChecked){
+                preferenceHelper.clearCredentials()
+            }
+        }
+
+        if (!savedUserLogin.isNullOrBlank() && !savedPassword.isNullOrBlank() && isRememberMeChecked) {
+            loginEmailEditText.setText(savedUserLogin)
+            passwordEditText.setText(savedPassword)
+            rememberCheckBox.isChecked = true
+        }
+
     }
 
     fun changeVisibilityForRegistration() {
@@ -153,5 +191,14 @@ class AuthRegisterActivity : AppCompatActivity() {
         passwordRegConfirmEditText.visibility = View.GONE
         regButton.visibility = View.GONE
         confirmationCheckBox.visibility = View.GONE
+    }
+
+    private fun saveCredentials() {
+        val userLogin = loginEmailEditText.text.toString()
+        val password = passwordEditText.text.toString()
+        val rememberMeChecked = rememberCheckBox.isChecked
+
+        preferenceHelper.saveCredentials(userLogin, password)
+        preferenceHelper.saveRememberMeChecked(rememberMeChecked)
     }
 }

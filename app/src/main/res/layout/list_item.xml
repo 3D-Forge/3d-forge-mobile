@@ -40,7 +40,7 @@
             android:id="@+id/button4"
             android:layout_width="86dp"
             android:layout_height="23dp"
-            android:layout_marginStart="64dp"
+            android:layout_marginStart="50dp"
             android:background="@drawable/deactivated_black_button"
             android:paddingStart="10dp"
             android:text="Придбати"
