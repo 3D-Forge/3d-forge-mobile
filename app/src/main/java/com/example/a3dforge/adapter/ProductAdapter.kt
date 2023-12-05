@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
@@ -33,6 +34,12 @@ class ProductAdapter(private val fragmentActivity: FragmentActivity) :
     val productPictureViewModel = ViewModelProvider(fragmentActivity, ProductPictureViewModelFactory(okHttpConfig))
         .get(ProductPictureViewModel::class.java)
 
+    private var clickListener: ClickListener? = null
+
+    fun setClickListener(listener: ClickListener) {
+        clickListener = listener
+    }
+
     class Comparator : DiffUtil.ItemCallback<Item>() {
         override fun areItemsTheSame(oldItem: Item, newItem: Item): Boolean {
             return oldItem.id == newItem.id
@@ -43,23 +50,38 @@ class ProductAdapter(private val fragmentActivity: FragmentActivity) :
         }
     }
 
-    class Holder(view: View) : RecyclerView.ViewHolder(view) {
-
+    class Holder(view: View, private val clickListener: ClickListener) : RecyclerView.ViewHolder(view) {
         val productNameTextView: TextView = view.findViewById(R.id.productNameTextView)
         val productPriceTextView: TextView = view.findViewById(R.id.productPriceTextView)
         val productRating: RatingBar = view.findViewById(R.id.productRating)
         val productImageView: ImageView = view.findViewById(R.id.productImageView)
+        val buyButton: Button = view.findViewById(R.id.buyButton)
+
+        var currentItem: Item? = null
+
+        init {
+            buyButton.setOnClickListener {
+                currentItem?.let { item ->
+                    clickListener.onBuyButtonClick(item.id)
+                }
+            }
+        }
+    }
+
+    interface ClickListener {
+        fun onBuyButtonClick(itemId: Int)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.list_item, parent, false)
-        return Holder(view)
+        return Holder(view, clickListener!!)
     }
 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: Holder, position: Int) {
         val item = getItem(position)
+        holder.currentItem = item
 
         holder.productNameTextView.text = item.name
         holder.productPriceTextView.text = item.minPrice.toString() + " ₴"
@@ -88,4 +110,3 @@ class ProductAdapter(private val fragmentActivity: FragmentActivity) :
     }
 
 }
-

@@ -2,8 +2,10 @@ package com.example.a3dforge.base
 
 import OkHttpConfig
 import android.util.Log
+import com.example.a3dforge.entities.CartGetRequestBody
 import com.example.a3dforge.entities.CatalogGetRequestBody
 import com.example.a3dforge.entities.CategoriesGetRequestBody
+import com.example.a3dforge.entities.ModelByIdGetRequestBody
 import com.example.a3dforge.entities.ProfileRequestBody
 import com.example.a3dforge.entities.SignInRequestBody
 import com.google.gson.Gson
@@ -227,7 +229,7 @@ class ApiManager(private val okHttpConfig: OkHttpConfig) {
         }
     }
 
-    fun getAllModels(q: String?, categories: Array<String>?, keywords: Array<String>?, sort_parameter: String?, sort_direction: String?, min_price: Double?, max_price: Double?, min_rating: Float?, max_rating: Float?, author: String?, page: Int?, page_size: Int?): CatalogGetRequestBody? {
+    fun getAllModels(q: String?, categories: Array<String>?, keywords: Array<String>?, sort_parameter: String?, sort_direction: String?, min_price: Double?, max_price: Double?, rating: Array<Int>?, author: String?, page: Int?, page_size: Int?): CatalogGetRequestBody? {
         val builder = (okHttpConfig.baseCatalogUrl + "/search").toHttpUrlOrNull()?.newBuilder()
 
         q?.let { builder?.addQueryParameter("q", it) }
@@ -241,8 +243,11 @@ class ApiManager(private val okHttpConfig: OkHttpConfig) {
         sort_direction?.let { builder?.addQueryParameter("sort_direction", it) }
         min_price?.let { builder?.addQueryParameter("min_price", it.toString()) }
         max_price?.let { builder?.addQueryParameter("max_price", it.toString()) }
-        min_rating?.let { builder?.addQueryParameter("min_rating", it.toString()) }
-        max_rating?.let { builder?.addQueryParameter("max_rating", it.toString()) }
+        rating?.let { ratingList ->
+            ratingList.forEach { index ->
+                builder?.addQueryParameter("rating", index.toString())
+            }
+        }
         author?.let { builder?.addQueryParameter("author", it) }
         page?.let { builder?.addQueryParameter("page", it.toString()) }
         page_size?.let { builder?.addQueryParameter("page_size", it.toString()) }
@@ -259,6 +264,35 @@ class ApiManager(private val okHttpConfig: OkHttpConfig) {
                 val responseData = responseBody?.string()
                 val gson = Gson()
                 val data = gson.fromJson(responseData, CatalogGetRequestBody::class.java)
+                responseBody?.close()
+                return data
+            } else {
+                Log.e("ApiManager", "Unsuccessful response: ${response.code}")
+                responseBody?.close()
+                return null
+            }
+        } catch (e: IOException) {
+            Log.e("ApiManager", "Network error", e)
+            return null
+        }
+    }
+
+    fun getModelById(id: Int): ModelByIdGetRequestBody? {
+        val builder = (okHttpConfig.baseCatalogUrl + "/${id}").toHttpUrlOrNull()?.newBuilder()
+
+        val request = Request.Builder()
+            .get()
+            .url(builder?.build() ?: return null)
+            .build()
+        try {
+            val response = okHttpConfig.client.newCall(request).execute()
+            val responseBody = response.body
+
+            if (response.isSuccessful) {
+                val responseData = responseBody?.string()
+                val gson = Gson()
+                val data = gson.fromJson(responseData, ModelByIdGetRequestBody::class.java)
+                Log.e("ApiManager", "$data")
                 responseBody?.close()
                 return data
             } else {
@@ -311,6 +345,33 @@ class ApiManager(private val okHttpConfig: OkHttpConfig) {
                 val responseData = responseBody?.string()
                 val gson = Gson()
                 val data = gson.fromJson(responseData, CategoriesGetRequestBody::class.java)
+                responseBody?.close()
+                return data
+            } else {
+                Log.e("ApiManager", "Unsuccessful response: ${response.code}")
+                responseBody?.close()
+                return null
+            }
+        } catch (e: IOException) {
+            Log.e("ApiManager", "Network error", e)
+            return null
+        }
+    }
+
+    fun getCart(): CartGetRequestBody? {
+        val request = Request.Builder()
+            .get()
+            .url(okHttpConfig.baseUrl + "cart")
+            .build()
+
+        try {
+            val response = okHttpConfig.client.newCall(request).execute()
+            val responseBody = response.body
+
+            if (response.isSuccessful) {
+                val responseData = responseBody?.string()
+                val gson = Gson()
+                val data = gson.fromJson(responseData, CartGetRequestBody::class.java)
                 responseBody?.close()
                 return data
             } else {

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:cardBackgroundColor="@color/purple"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="4dp"
+        android:layout_marginEnd="20dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/cartModelDescriptionTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="176dp"
+            android:layout_marginTop="4dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="Тачка"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cartModelNameTextView" />
+
+        <ImageView
+            android:id="@+id/productImageView"
+            android:layout_width="106dp"
+            android:layout_height="79dp"
+            android:src="@drawable/makvin_image"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/checkBox"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/cartModelPriceTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="176dp"
+            android:layout_marginTop="12dp"
+            android:elevation="8dp"
+            android:text="1000 ₴"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cartModelDescriptionTextView" />
+
+        <TextView
+            android:id="@+id/cartModelNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="176dp"
+            android:layout_marginTop="4dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="Машина Маквін"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <CheckBox
+            android:id="@+id/checkBox"
+            style="@style/WhiteCheckBoxStyle"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/countDecreaseImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toEndOf="@+id/cartModelPriceTextView"
+            app:layout_constraintTop_toBottomOf="@+id/cartModelDescriptionTextView"
+            app:srcCompat="@drawable/ic_minus" />
+
+        <TextView
+            android:id="@+id/countTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:text="1"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toEndOf="@+id/countDecreaseImageView"
+            app:layout_constraintTop_toBottomOf="@+id/cartModelDescriptionTextView" />
+
+        <ImageView
+            android:id="@+id/countIncreaseImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toEndOf="@+id/countTextView"
+            app:layout_constraintTop_toBottomOf="@+id/cartModelDescriptionTextView"
+            app:srcCompat="@drawable/ic_add_circle" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

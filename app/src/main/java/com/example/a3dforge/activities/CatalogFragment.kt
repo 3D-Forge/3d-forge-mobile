@@ -127,7 +127,6 @@ class CatalogFragment : Fragment() {
                     null,
                     null,
                     null,
-                    null
                 )
 
                 sortIndexImageView.rotation += 180F
@@ -146,8 +145,7 @@ class CatalogFragment : Fragment() {
             sharedViewModel.filterParameters.page = null
             sharedViewModel.filterParameters.author = null
             sharedViewModel.filterParameters.keywords = null
-            sharedViewModel.filterParameters.minRating = null
-            sharedViewModel.filterParameters.maxRating = null
+            sharedViewModel.filterParameters.rating = null
             sharedViewModel.filterParameters.minPrice = null
             sharedViewModel.filterParameters.maxPrice = null
             searchEditText.text = Editable.Factory.getInstance().newEditable("")
@@ -163,7 +161,6 @@ class CatalogFragment : Fragment() {
                 null,
                 null,
                 null,
-                null
             )
         }
 
@@ -197,7 +194,6 @@ class CatalogFragment : Fragment() {
             null,
             null,
             null,
-            null
         )
 
         searchEditText.setOnEditorActionListener { v, actionId, event ->
@@ -216,7 +212,6 @@ class CatalogFragment : Fragment() {
                         null,
                         null,
                         null,
-                        null
                     )
                 }
                 true
@@ -239,7 +234,6 @@ class CatalogFragment : Fragment() {
                 null,
                 null,
                 null,
-                null
             )
         }
 
@@ -252,6 +246,21 @@ class CatalogFragment : Fragment() {
             transaction.addToBackStack(null)
             transaction.commit()
         }
+
+        adapter.setClickListener(object : ProductAdapter.ClickListener {
+            override fun onBuyButtonClick(modelId: Int) {
+                val modelFragment = ModelFragment()
+
+                val bundle = Bundle()
+                bundle.putInt("modelId", modelId)
+                modelFragment.arguments = bundle
+
+                val transaction = requireActivity().supportFragmentManager.beginTransaction()
+                transaction.replace(R.id.fragment_container, modelFragment)
+                transaction.addToBackStack(null)
+                transaction.commit()
+            }
+        })
 
         return view
     }

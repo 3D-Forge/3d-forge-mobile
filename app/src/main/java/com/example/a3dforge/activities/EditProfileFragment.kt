@@ -200,7 +200,7 @@ class EditProfileFragment : Fragment() {
                 imageBytes?.let { BitmapFactory.decodeByteArray(imageBytes, 0, it.size) }!!
 
 /*            val imageProcessor = AvatarProcessor()
-            val avatarWithBorder = imageProcessor.addBorderWithScale(imageBitmap, 30, Color.WHITE, 0.8f)*/
+            val avatar0WithBorder = imageProcessor.addBorderWithScale(imageBitmap, 30, Color.WHITE, 0.8f)*/
             avatarImageView.setImageBitmap(imageBitmap)
         }
 
@@ -212,38 +212,45 @@ class EditProfileFragment : Fragment() {
 
             userLoginEditTextView.text = nicknameEditText.text.toString()
 
+            var userData: ProfileRequestBody.UserData? = null
+
             val words = fullNameEditProfileEditText.text.split(" ")
-            val userData = ProfileRequestBody.UserData(
-                login = nicknameEditText.text.toString(),
-                email = null,
-                phone = phoneNumberEditText.text.toString(),
-                firstName = words[1],
-                middleName = words[0],
-                lastName = words[2],
-                region = null,
-                cityRegion = cityRegionEditText.text.toString(),
-                city = cityEditText.text.toString(),
-                street = streetEditText.text.toString(),
-                house = houseEditText.text.toString(),
-                apartment = null,
-                departmentNumber = null,
-                deliveryType = null
-            )
+            if (words.size != 3) {
+                Toast.makeText(this.requireContext(), "Введіть повне ім'я!", Toast.LENGTH_SHORT).show()
+            }
+            else {
+                userData = ProfileRequestBody.UserData(
+                    login = nicknameEditText.text.toString(),
+                    email = null,
+                    phone = phoneNumberEditText.text.toString(),
+                    firstName = words[1],
+                    middleName = words[0],
+                    lastName = words[2],
+                    region = null,
+                    cityRegion = cityRegionEditText.text.toString(),
+                    city = cityEditText.text.toString(),
+                    street = streetEditText.text.toString(),
+                    house = houseEditText.text.toString(),
+                    apartment = null,
+                    departmentNumber = null,
+                    deliveryType = null
+                )
+            }
             val json = JSONObject()
-            json.put("login", userData.login)
-            json.put("email", userData.email)
-            json.put("phoneNumber", userData.phone)
-            json.put("firstName", userData.firstName)
-            json.put("midName", userData.middleName)
-            json.put("lastName", userData.lastName)
-            json.put("region", userData.region)
-            json.put("cityRegion", userData.cityRegion)
-            json.put("city", userData.city)
-            json.put("street", userData.street)
-            json.put("house", userData.house)
-            json.put("apartment", userData.apartment)
-            json.put("departmentNumber", userData.departmentNumber)
-            json.put("deliveryType", userData.deliveryType)
+                json.put("login", userData!!.login)
+                json.put("email", userData!!.email)
+                json.put("phoneNumber", userData!!.phone)
+                json.put("firstName", userData!!.firstName)
+                json.put("midName", userData!!.middleName)
+                json.put("lastName", userData!!.lastName)
+                json.put("region", userData!!.region)
+                json.put("cityRegion", userData!!.cityRegion)
+                json.put("city", userData!!.city)
+                json.put("street", userData!!.street)
+                json.put("house", userData!!.house)
+                json.put("apartment", userData!!.apartment)
+                json.put("departmentNumber", userData!!.departmentNumber)
+                json.put("deliveryType", userData!!.deliveryType)
 
             val changeProfileViewModel = ViewModelProvider(this, ChangeProfileViewModelFactory(okHttpConfig, json, userLogin)).get(ChangeProfileViewModel::class.java)
 

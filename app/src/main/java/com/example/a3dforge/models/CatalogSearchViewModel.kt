@@ -18,12 +18,12 @@ class CatalogSearchViewModel(private val okHttpConfig: OkHttpConfig) : ViewModel
     val profileResult: LiveData<Pair<Boolean, CatalogGetRequestBody?>>
         get() = _catalogGetResult
 
-    fun getCatalog(q: String?, categories: Array<String>?, keywords: Array<String>?, sort_parameter: String?, sort_direction: String?, min_price: Double?, max_price: Double?, min_rating: Float?, max_rating: Float?, author: String?, page: Int?, page_size: Int?) {
+    fun getCatalog(q: String?, categories: Array<String>?, keywords: Array<String>?, sort_parameter: String?, sort_direction: String?, min_price: Double?, max_price: Double?, rating: Array<Int>?, author: String?, page: Int?, page_size: Int?) {
         val apiManager = ApiManager(okHttpConfig)
 
         viewModelScope.launch {
             val profile = withContext(Dispatchers.IO) {
-                apiManager.getAllModels(q, categories, keywords, sort_parameter, sort_direction, min_price, max_price, min_rating, max_rating, author, page, page_size)
+                apiManager.getAllModels(q, categories, keywords, sort_parameter, sort_direction, min_price, max_price, rating, author, page, page_size)
             }
             val isSuccessful = profile != null
             _catalogGetResult.value = Pair(isSuccessful, profile)

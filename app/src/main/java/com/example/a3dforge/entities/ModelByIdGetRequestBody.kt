@@ -1,7 +1,7 @@
 package com.example.a3dforge.entities
 
-data class CategoriesGetRequestBody(
+data class ModelByIdGetRequestBody(
     val success: Boolean,
     val message: String?,
-    val data: List<Categories>
+    val data: Item
 )

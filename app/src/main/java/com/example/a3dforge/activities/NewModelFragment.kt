@@ -167,8 +167,6 @@ class NewModelFragment : Fragment() {
                         val filePath = getFilePathFromUri(selectedFileUri, requireContext())
                         filePath?.let { path ->
                             val file = File(path)
-                            println(filePath)
-                            println(filePath)
                             val newFilePath = path + ".stl"
                             val newFile = File(newFilePath)
                             file.renameTo(newFile)
@@ -194,9 +192,6 @@ class NewModelFragment : Fragment() {
                             val file = File(path)
                             modelUploadBody.files.add(file)
                             files.add(file)
-                            for (i in files){
-                                println(i)
-                            }
                             toggleButtonState(lastClickedButton)
                         }
                     }

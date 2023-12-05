@@ -8,27 +8,23 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.a3dforge.R
 
-class TagsAdapter(private val tags: MutableList<String>, private val onClickRemove: (Int) -> Unit) :
-    RecyclerView.Adapter<TagsAdapter.ViewHolder>() {
+class TagsModelAdapter(private val tags: MutableList<String>, private val onClickRemove: (Int) -> Unit) :
+    RecyclerView.Adapter<TagsModelAdapter.ViewHolder>() {
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val tagTextView: TextView = itemView.findViewById(R.id.tagTextView)
+        val tagNameTextView: TextView = itemView.findViewById(R.id.tagNameTextView)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.tag_item, parent, false)
+            .inflate(R.layout.tag_model_item, parent, false)
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val tag = tags[position]
 
-        holder.tagTextView.text = tag
-        holder.tagTextView.setOnClickListener {
-            onClickRemove.invoke(position)
-        }
-
+        holder.tagNameTextView.text = tag
     }
 
     override fun getItemCount(): Int {

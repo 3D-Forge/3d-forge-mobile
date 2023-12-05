@@ -12,4 +12,5 @@
     <color name="dark_purple">#3E156C</color>
     <color name="blue">#0074FF</color>
     <color name="green">#03A831</color>
+    <color name="lightest_blue">#B4B4EBEF</color>
 </resources>

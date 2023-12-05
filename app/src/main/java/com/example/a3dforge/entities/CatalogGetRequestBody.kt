@@ -13,7 +13,7 @@ data class Data(
     val items: List<Item>
 )
 
-data class Categoryes(
+data class Categories(
     val id: Int,
     val name: String
 )
@@ -33,6 +33,6 @@ data class Item(
     val rating: Float,
     val volume: Float,
     val picturesIDs: List<Int>,
-    val categoryes: List<Categoryes>,
+    val categories: List<Categories>,
     val keywords: List<Any>
 )

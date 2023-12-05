@@ -10,6 +10,7 @@ import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
@@ -33,6 +34,7 @@ class ProfileFragment : Fragment() {
     private lateinit var streetInfoEditText: EditText
     private lateinit var logoutImageView: ImageView
     private lateinit var editProfileImageView: ImageView
+    private lateinit var cartButton: Button
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,6 +52,7 @@ class ProfileFragment : Fragment() {
         phoneInfoEditText = view.findViewById(R.id.phoneInfoEditText)
         cityInfoEditText = view.findViewById(R.id.cityInfoEditText)
         streetInfoEditText = view.findViewById(R.id.streetInfoEditText)
+        cartButton = view.findViewById(R.id.cartButton)
 
         basicInfoTextView.paintFlags = basicInfoTextView.paintFlags or Paint.UNDERLINE_TEXT_FLAG
         addressInfoTextView.paintFlags = addressInfoTextView.paintFlags or Paint.UNDERLINE_TEXT_FLAG
@@ -129,6 +132,15 @@ class ProfileFragment : Fragment() {
 
             val transaction = requireActivity().supportFragmentManager.beginTransaction()
             transaction.replace(R.id.fragment_container, editProfileFragment)
+            transaction.addToBackStack(null)
+            transaction.commit()
+        }
+
+        cartButton.setOnClickListener{
+            val cartFragment = CartFragment()
+
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.fragment_container, cartFragment)
             transaction.addToBackStack(null)
             transaction.commit()
         }

@@ -4,5 +4,9 @@
     <style name="Circular">
         <item name="cornerSize">50%</item>
     </style>
-    
+
+    <style name="WhiteCheckBoxStyle" parent="Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="android:buttonTint">@color/white</item>
+    </style>
+
 </resources>
