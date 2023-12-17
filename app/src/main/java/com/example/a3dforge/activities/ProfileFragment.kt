@@ -72,12 +72,12 @@ class ProfileFragment : Fragment() {
                     val emailEditable = Editable.Factory.getInstance().newEditable(email)
                     emailInfoEditText.text = emailEditable
                     if (userData.data.firstName != "null") {
-                        val fullName = userData.data.middleName + " " + userData.data.firstName + " " + userData.data.lastName
+                        val fullName = userData.data.midName + " " + userData.data.firstName + " " + userData.data.lastName
                         val fullNameEditable = Editable.Factory.getInstance().newEditable(fullName)
                         fullNameEditText.text = fullNameEditable
                     }
-                    if (userData.data.phone != "null"){
-                        val phone = userData.data.phone
+                    if (userData.data.phoneNumber != "null"){
+                        val phone = userData.data.phoneNumber
                         val phoneEditable = Editable.Factory.getInstance().newEditable(phone)
                         phoneInfoEditText.text = phoneEditable
                     }

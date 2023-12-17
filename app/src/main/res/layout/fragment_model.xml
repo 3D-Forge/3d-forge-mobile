@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".activities.ModelFragment"
-    android:background="@color/purple">
+    android:background="?attr/colorOnPrimary">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -40,11 +40,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            android:layout_marginEnd="12dp"
             android:layout_marginTop="12dp"
-            android:paddingBottom="20dp"
+            android:layout_marginEnd="12dp"
             android:background="@drawable/rounded_white_background"
+            android:paddingBottom="20dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/backToCatalogArrowImageView">
 
@@ -63,10 +64,10 @@
                 android:id="@+id/textView38"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Повернення 14 днів"
-                android:textSize="12sp"
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="16dp"
+                android:text="Повернення 14 днів"
+                android:textSize="12sp"
                 app:layout_constraintStart_toEndOf="@+id/imageView29"
                 app:layout_constraintTop_toBottomOf="@+id/imageView28" />
 
@@ -74,9 +75,9 @@
                 android:id="@+id/imageView28"
                 android:layout_width="345dp"
                 android:layout_height="11dp"
+                android:layout_marginTop="12dp"
                 android:src="@drawable/line"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="12dp"
                 app:layout_constraintHorizontal_bias="0.362"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView37" />
@@ -107,8 +108,8 @@
                 android:id="@+id/imageView27"
                 android:layout_width="345dp"
                 android:layout_height="11dp"
-                android:src="@drawable/line"
                 android:layout_marginTop="12dp"
+                android:src="@drawable/line"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.38"
                 app:layout_constraintStart_toStartOf="parent"
@@ -130,9 +131,9 @@
                 android:id="@+id/textView34"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:text="за тарифами перевізника"
                 android:textSize="12sp"
-                android:layout_marginStart="8dp"
                 app:layout_constraintStart_toEndOf="@+id/imageView26"
                 app:layout_constraintTop_toBottomOf="@+id/textView33" />
 
@@ -140,8 +141,8 @@
                 android:id="@+id/imageView26"
                 android:layout_width="34dp"
                 android:layout_height="26dp"
-                android:layout_marginTop="20dp"
                 android:layout_marginStart="24dp"
+                android:layout_marginTop="20dp"
                 android:src="@drawable/ic_np_mail"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageView23" />
@@ -177,8 +178,8 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="20dp"
                 android:text="Відділення Нова Пошта"
-                android:textSize="12sp"
                 android:textColor="@color/black"
+                android:textSize="12sp"
                 app:layout_constraintStart_toEndOf="@+id/imageView23"
                 app:layout_constraintTop_toBottomOf="@+id/cityChooseSpinner" />
 
@@ -215,67 +216,33 @@
                 android:id="@+id/specificModelNameTextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Назва моделі"
-                android:textColor="@color/black"
-                android:textSize="18sp"
-                android:textAllCaps="true"
                 android:layout_marginStart="18dp"
                 android:layout_marginTop="10dp"
+                android:text="Назва моделі"
+                android:textAllCaps="true"
+                android:textColor="@color/black"
+                android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintWidth_default="wrap" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/button2"
-                android:layout_width="91dp"
-                android:layout_height="25dp"
-                android:layout_marginStart="18dp"
-                android:layout_marginTop="24dp"
-                android:background="@drawable/gray_round_btn"
-                android:clickable="false"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/specificModelNameTextView" />
-
-            <ImageView
-                android:id="@+id/imageView21"
-                android:layout_width="18dp"
-                android:layout_height="17dp"
-                android:layout_marginStart="3dp"
-                android:layout_marginTop="4dp"
-                android:elevation="8dp"
-                android:src="@drawable/circle_available"
-                app:layout_constraintStart_toStartOf="@+id/button2"
-                app:layout_constraintTop_toTopOf="@+id/button2" />
-
-            <TextView
-                android:id="@+id/textView23"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:elevation="8dp"
-                android:text="У наявності"
-                android:textSize="11sp"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="5dp"
-                app:layout_constraintEnd_toEndOf="@+id/button2"
-                app:layout_constraintTop_toTopOf="@+id/button2" />
 
             <TextView
                 android:id="@+id/textView24"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
                 android:text="Код: 123456"
                 android:textColor="@color/gray"
-                android:layout_marginStart="18dp"
-                android:layout_marginTop="10dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/button2" />
+                app:layout_constraintTop_toBottomOf="@+id/specificModelNameTextView" />
 
             <RatingBar
                 android:id="@+id/productRating"
                 style="?android:attr/ratingBarStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="16dp"
                 android:isIndicator="true"
                 android:numStars="5"
                 android:stepSize="0.1"
@@ -283,20 +250,20 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.502"
                 app:layout_constraintStart_toEndOf="@+id/textView24"
-                app:layout_constraintTop_toBottomOf="@+id/button2" />
+                app:layout_constraintTop_toBottomOf="@+id/specificModelNameTextView" />
 
             <TextView
                 android:id="@+id/textView25"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="16dp"
                 android:text="0 відгуків"
                 android:textColor="@color/gray"
                 android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.195"
+                app:layout_constraintHorizontal_bias="0.215"
                 app:layout_constraintStart_toEndOf="@+id/productRating"
-                app:layout_constraintTop_toBottomOf="@+id/button2" />
+                app:layout_constraintTop_toBottomOf="@+id/specificModelNameTextView" />
 
             <ImageView
                 android:id="@+id/modelImageView"
@@ -321,7 +288,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/modelImageView" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/button3"
+                android:id="@+id/addToCartButton"
                 android:layout_width="135dp"
                 android:layout_height="55dp"
                 android:layout_marginTop="24dp"
@@ -342,8 +309,8 @@
                 android:layout_marginTop="12dp"
                 android:elevation="8dp"
                 android:src="@drawable/ic_shopping_cart_white"
-                app:layout_constraintStart_toStartOf="@+id/button3"
-                app:layout_constraintTop_toTopOf="@+id/button3" />
+                app:layout_constraintStart_toStartOf="@+id/addToCartButton"
+                app:layout_constraintTop_toTopOf="@+id/addToCartButton" />
 
             <TextView
                 android:id="@+id/modelPriceTextView"
@@ -353,8 +320,8 @@
                 android:layout_marginTop="32dp"
                 android:text="720 ₴"
                 android:textColor="@color/black"
-                android:textStyle="bold"
                 android:textSize="28sp"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@+id/view"
                 app:layout_constraintTop_toTopOf="@+id/view" />
 
@@ -371,8 +338,8 @@
                 android:id="@+id/imageView19"
                 android:layout_width="345dp"
                 android:layout_height="11dp"
-                android:src="@drawable/line"
                 android:layout_marginTop="12dp"
+                android:src="@drawable/line"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tagsModelRcView" />
@@ -381,10 +348,10 @@
                 android:id="@+id/textView27"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Доставка:"
-                android:textColor="@color/black"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="18dp"
+                android:text="Доставка:"
+                android:textColor="@color/black"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageView19" />
 
@@ -392,8 +359,8 @@
                 android:id="@+id/cityChooseSpinner"
                 android:layout_width="84dp"
                 android:layout_height="42dp"
-                android:layout_marginTop="8dp"
                 android:layout_marginStart="20dp"
+                android:layout_marginTop="8dp"
                 app:layout_constraintStart_toEndOf="@+id/textView27"
                 app:layout_constraintTop_toBottomOf="@+id/imageView19">
 
@@ -403,9 +370,9 @@
                 android:id="@+id/imageView29"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_return"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="12dp"
+                android:src="@drawable/ic_return"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageView28" />
 

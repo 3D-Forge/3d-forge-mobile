@@ -8,7 +8,7 @@ data class FilterParametersBody(
     var sortDirection: String? = "",
     var minPrice: Double? = 0.0,
     var maxPrice: Double? = 20000.0,
-    var rating: Array<String>? = emptyArray<String>(),
+    var rating: Array<Int>? = emptyArray<Int>(),
     var author: String? = "",
     var page: Int? = 0,
     var pageSize: Int? = 10

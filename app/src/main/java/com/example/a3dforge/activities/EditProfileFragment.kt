@@ -13,6 +13,7 @@ import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
@@ -22,11 +23,14 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.a3dforge.R
 import com.example.a3dforge.base.AvatarProcessor
-import com.example.a3dforge.entities.ProfileRequestBody
+import com.example.a3dforge.base.PreferenceHelper
+import com.example.a3dforge.entities.ProfileGetRequestBody
+import com.example.a3dforge.entities.ProfilePutRequestBody
 import com.example.a3dforge.factories.AvatarViewModelFactory
 import com.example.a3dforge.factories.ChangeProfileViewModelFactory
 import com.example.a3dforge.factories.ProfileViewModelFactory
@@ -63,6 +67,8 @@ class EditProfileFragment : Fragment() {
 
     private lateinit var filePicker: ActivityResultLauncher<Intent>
 
+    private lateinit var preferenceHelper: PreferenceHelper
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -95,6 +101,38 @@ class EditProfileFragment : Fragment() {
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, data)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         systemThemeSpinner.adapter = adapter
+
+        preferenceHelper = PreferenceHelper(requireContext())
+
+        val selectedTheme = preferenceHelper.getSelectedTheme()
+
+        val spinnerPosition = when (selectedTheme) {
+            AppCompatDelegate.MODE_NIGHT_NO -> 0
+            AppCompatDelegate.MODE_NIGHT_YES -> 1
+            AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM -> {
+                val currentNightMode = AppCompatDelegate.getDefaultNightMode()
+                if (currentNightMode == AppCompatDelegate.MODE_NIGHT_NO) 0 else 1
+            }
+            else -> 0 // default to light theme
+        }
+
+        systemThemeSpinner.setSelection(spinnerPosition)
+
+        systemThemeSpinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parentView: AdapterView<*>?, selectedItemView: View?, position: Int, id: Long) {
+                val selectedTheme = if (position == 0) {
+                    AppCompatDelegate.MODE_NIGHT_NO
+                } else {
+                    AppCompatDelegate.MODE_NIGHT_YES
+                }
+
+                AppCompatDelegate.setDefaultNightMode(selectedTheme)
+                preferenceHelper.saveSelectedTheme(selectedTheme)
+            }
+
+            override fun onNothingSelected(parentView: AdapterView<*>?) {
+            }
+        })
 
         genInfoTextView.paintFlags = genInfoTextView.paintFlags or Paint.UNDERLINE_TEXT_FLAG
         addressEditProfileTextView.paintFlags = addressEditProfileTextView.paintFlags or Paint.UNDERLINE_TEXT_FLAG
@@ -156,12 +194,12 @@ class EditProfileFragment : Fragment() {
                     userLoginEditTextView.text = userData.data.login
                     nicknameEditText.text = Editable.Factory.getInstance().newEditable(userData.data.login)
                     if (userData.data.firstName != "null") {
-                        val fullName = userData.data.middleName + " " + userData.data.firstName + " " + userData.data.lastName
+                        val fullName = userData.data.midName + " " + userData.data.firstName + " " + userData.data.lastName
                         val fullNameEditable = Editable.Factory.getInstance().newEditable(fullName)
                         fullNameEditProfileEditText.text = fullNameEditable
                     }
-                    if (userData.data.phone != "null"){
-                        val phone = userData.data.phone
+                    if (userData.data.phoneNumber != "null"){
+                        val phone = userData.data.phoneNumber
                         val phoneEditable = Editable.Factory.getInstance().newEditable(phone)
                         phoneNumberEditText.text = phoneEditable
                     }
@@ -208,61 +246,75 @@ class EditProfileFragment : Fragment() {
 
         avatarViewModel.getAvatar()
 
-        saveChangesButton.setOnClickListener{
-
+        saveChangesButton.setOnClickListener {
             userLoginEditTextView.text = nicknameEditText.text.toString()
 
-            var userData: ProfileRequestBody.UserData? = null
+            var userData: ProfilePutRequestBody.UserPutData? = null
 
             val words = fullNameEditProfileEditText.text.split(" ")
-            if (words.size != 3) {
+            if (words.size != 3 || fullNameEditProfileEditText.text.toString() == "") {
                 Toast.makeText(this.requireContext(), "Введіть повне ім'я!", Toast.LENGTH_SHORT).show()
-            }
-            else {
-                userData = ProfileRequestBody.UserData(
+            } else {
+                userData = ProfilePutRequestBody.UserPutData(
                     login = nicknameEditText.text.toString(),
-                    email = null,
-                    phone = phoneNumberEditText.text.toString(),
-                    firstName = words[1],
-                    middleName = words[0],
-                    lastName = words[2],
+                    phoneNumber = phoneNumberEditText.text.toString(),
+                    firstName = (if (words[0].isNotEmpty()) words[0] else null),
+                    midName = if (words[1].isNotEmpty()) words[1] else null,
+                    lastName = if (words[2].isNotEmpty()) words[2] else null,
                     region = null,
-                    cityRegion = cityRegionEditText.text.toString(),
-                    city = cityEditText.text.toString(),
-                    street = streetEditText.text.toString(),
-                    house = houseEditText.text.toString(),
+                    cityRegion = if (cityRegionEditText.text.isNotEmpty()) cityRegionEditText.text.toString() else null,
+                    city = if (cityEditText.text.isNotEmpty()) cityEditText.text.toString() else null,
+                    street = if (streetEditText.text.isNotEmpty()) streetEditText.text.toString() else null,
+                    house = if (houseEditText.text.isNotEmpty()) houseEditText.text.toString() else null,
                     apartment = null,
                     departmentNumber = null,
-                    deliveryType = null
+                    deliveryType = null,
+                    orderStateChangedNotification = null,
+                    getForumResponseNotification = null,
+                    modelRatedNotification = null
                 )
             }
-            val json = JSONObject()
-                json.put("login", userData!!.login)
-                json.put("email", userData!!.email)
-                json.put("phoneNumber", userData!!.phone)
-                json.put("firstName", userData!!.firstName)
-                json.put("midName", userData!!.middleName)
-                json.put("lastName", userData!!.lastName)
-                json.put("region", userData!!.region)
-                json.put("cityRegion", userData!!.cityRegion)
-                json.put("city", userData!!.city)
-                json.put("street", userData!!.street)
-                json.put("house", userData!!.house)
-                json.put("apartment", userData!!.apartment)
-                json.put("departmentNumber", userData!!.departmentNumber)
-                json.put("deliveryType", userData!!.deliveryType)
 
-            val changeProfileViewModel = ViewModelProvider(this, ChangeProfileViewModelFactory(okHttpConfig, json, userLogin)).get(ChangeProfileViewModel::class.java)
+            if (userData != null) {
+                val json = JSONObject()
 
-            changeProfileViewModel.profileChangeResult.observe(viewLifecycleOwner){ changeProfile ->
-                println(changeProfile.toString())
-            }
+                fun putNonNull(key: String, value: Any?) {
+                    if (value != null) {
+                        json.put(key, value)
+                    }
+                }
 
-            changeProfileViewModel.changeProfile()
+                putNonNull("login", userData.login)
+                putNonNull("phoneNumber", userData.phoneNumber)
+                putNonNull("firstName", userData.firstName)
+                putNonNull("midName", userData.midName)
+                putNonNull("lastname", userData.lastName)
+                putNonNull("region", userData.region)
+                putNonNull("cityRegion", userData.cityRegion)
+                putNonNull("city", userData.city)
+                putNonNull("street", userData.street)
+                putNonNull("house", userData.house)
+                putNonNull("apartment", userData.apartment)
+                putNonNull("departmentNumber", userData.departmentNumber)
+                putNonNull("deliveryType", userData.deliveryType)
+                putNonNull("orderStateChangedNotification", userData.orderStateChangedNotification)
+                putNonNull("getForumResponseNotification", userData.getForumResponseNotification)
+                putNonNull("modelRatedNotification", userData.modelRatedNotification)
 
-            if (nicknameEditText.text.toString() != userLogin) {
-                val newLogin = nicknameEditText.text.toString()
-                (requireActivity() as MainActivity).updateLogin(newLogin)
+                val changeProfileViewModel = ViewModelProvider(this, ChangeProfileViewModelFactory(okHttpConfig, json, userLogin)).get(ChangeProfileViewModel::class.java)
+
+                changeProfileViewModel.profileChangeResult.observe(viewLifecycleOwner) { changeProfile ->
+                    println(changeProfile.toString())
+                }
+
+                changeProfileViewModel.changeProfile()
+
+                if (nicknameEditText.text.toString() != userLogin) {
+                    val newLogin = nicknameEditText.text.toString()
+                    (requireActivity() as MainActivity).updateLogin(newLogin)
+                }
+            } else {
+
             }
         }
 

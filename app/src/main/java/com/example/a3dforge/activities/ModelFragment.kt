@@ -6,10 +6,10 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Rect
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
@@ -19,12 +19,18 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.a3dforge.R
 import com.example.a3dforge.adapter.CategoriesModelAdapter
-import com.example.a3dforge.adapter.TagsAdapter
 import com.example.a3dforge.adapter.TagsModelAdapter
+import com.example.a3dforge.base.CustomToast
+import com.example.a3dforge.entities.CartPutRequestBody
+import com.example.a3dforge.factories.CartPutViewModelFactory
+import com.example.a3dforge.factories.CartViewModelFactory
 import com.example.a3dforge.factories.ModelByIdViewModelFactory
 import com.example.a3dforge.factories.ProductPictureViewModelFactory
+import com.example.a3dforge.models.CartPutViewModel
+import com.example.a3dforge.models.CartViewModel
 import com.example.a3dforge.models.ModelByIdViewModel
 import com.example.a3dforge.models.ProductPictureViewModel
+import com.google.android.material.snackbar.Snackbar
 
 class ModelFragment : Fragment() {
 
@@ -37,6 +43,7 @@ class ModelFragment : Fragment() {
     private lateinit var tagsModelRcView: RecyclerView
     private lateinit var categoriesAdapter: CategoriesModelAdapter
     private lateinit var tagsAdapter: TagsModelAdapter
+    private lateinit var addToCartButton: Button
 
     private var selectedCategories: MutableList<String> = mutableListOf()
     private var selectedTags: MutableList<String> = mutableListOf()
@@ -55,6 +62,7 @@ class ModelFragment : Fragment() {
         backToCatalogArrowImageView = view.findViewById(R.id.backToCatalogArrowImageView)
         categoriesModelRcView = view.findViewById(R.id.categoriesModelRcView)
         tagsModelRcView = view.findViewById(R.id.tagsModelRcView)
+        addToCartButton = view.findViewById(R.id.addToCartButton)
 
         val args = arguments
         val modelId = args?.getInt("modelId")
@@ -148,6 +156,58 @@ class ModelFragment : Fragment() {
             requireActivity().supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, CatalogFragment())
                 .commit()
+        }
+
+        addToCartButton.setOnClickListener{
+            val cartGetViewModel = ViewModelProvider(this, CartViewModelFactory(okHttpConfig))
+                .get(CartViewModel::class.java)
+
+            val cartPutViewModel =
+                ViewModelProvider(this, CartPutViewModelFactory(okHttpConfig))
+                    .get(CartPutViewModel::class.java)
+
+            cartPutViewModel.cartPutResult.observe(
+                viewLifecycleOwner,
+                Observer { result ->
+                    if (result) {
+                        CustomToast.showSuccess(
+                            requireContext(),
+                            "Модель успішно додана до кошику"
+                        )
+                    } else {
+                        CustomToast.showError(
+                            requireContext(),
+                            "Помилка при додаванні до кошику"
+                        )
+                    }
+                })
+
+            var putData: CartPutRequestBody? = null
+
+            putData = CartPutRequestBody(
+                modelId,
+                1,
+                10,
+                2,
+                1,
+                "SLA",
+                "ABS",
+                null
+            )
+
+            cartGetViewModel.cartResult.observe(viewLifecycleOwner, Observer { cartResult ->
+                cartResult?.second?.data?.orderedModelIDs?.let { orderedModelIDs ->
+                    val isModelInCart = orderedModelIDs.any { it.catalogModelId == modelId }
+                    if (isModelInCart) {
+                        CustomToast.showError(requireContext(), "Така модель вже є в корзині")
+                    } else {
+                        cartPutViewModel.putCart(putData)
+                    }
+                }
+            })
+
+            cartGetViewModel.getCart()
+
         }
 
         return view

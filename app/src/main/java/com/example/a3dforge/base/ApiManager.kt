@@ -3,10 +3,11 @@ package com.example.a3dforge.base
 import OkHttpConfig
 import android.util.Log
 import com.example.a3dforge.entities.CartGetRequestBody
+import com.example.a3dforge.entities.CartPutRequestBody
 import com.example.a3dforge.entities.CatalogGetRequestBody
 import com.example.a3dforge.entities.CategoriesGetRequestBody
 import com.example.a3dforge.entities.ModelByIdGetRequestBody
-import com.example.a3dforge.entities.ProfileRequestBody
+import com.example.a3dforge.entities.ProfileGetRequestBody
 import com.example.a3dforge.entities.SignInRequestBody
 import com.google.gson.Gson
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
@@ -53,7 +54,7 @@ class ApiManager(private val okHttpConfig: OkHttpConfig) {
         }
     }
 
-    fun getProfile(userLogin: String): ProfileRequestBody? {
+    fun getProfile(userLogin: String): ProfileGetRequestBody? {
         val request = Request.Builder()
             .get()
             .url(okHttpConfig.baseUserUrl + userLogin + "/info")
@@ -68,13 +69,14 @@ class ApiManager(private val okHttpConfig: OkHttpConfig) {
                 responseBody?.close()
                 responseData?.let {
                     val jsonObject = JSONObject(it)
-                    val userData = ProfileRequestBody.UserData(
+                    val userData = ProfileGetRequestBody.UserData(
                         login = jsonObject.getJSONObject("data").getString("login"),
                         email = jsonObject.getJSONObject("data").getString("email"),
-                        phone = jsonObject.getJSONObject("data").optString("phoneNumber"),
+                        phoneNumber = jsonObject.getJSONObject("data").optString("phoneNumber"),
                         firstName = jsonObject.getJSONObject("data").optString("firstName"),
-                        middleName = jsonObject.getJSONObject("data").optString("midName"),
+                        midName = jsonObject.getJSONObject("data").optString("midName"),
                         lastName = jsonObject.getJSONObject("data").optString("lastName"),
+                        country = jsonObject.getJSONObject("data").optString("country"),
                         region = jsonObject.getJSONObject("data").optString("region"),
                         cityRegion = jsonObject.getJSONObject("data").optString("cityRegion"),
                         city = jsonObject.getJSONObject("data").optString("city"),
@@ -82,9 +84,19 @@ class ApiManager(private val okHttpConfig: OkHttpConfig) {
                         house = jsonObject.getJSONObject("data").optString("house"),
                         apartment = jsonObject.getJSONObject("data").optString("apartment"),
                         departmentNumber = jsonObject.getJSONObject("data").optString("departmentNumber"),
-                        deliveryType = jsonObject.getJSONObject("data").optString("deliveryType")
+                        deliveryType = jsonObject.getJSONObject("data").optString("deliveryType"),
+                        orderStateChangedNotification = jsonObject.getJSONObject("data").getBoolean("orderStateChangedNotification"),
+                        getForumResponseNotification = jsonObject.getJSONObject("data").getBoolean("getForumResponseNotification"),
+                        modelRatedNotification = jsonObject.getJSONObject("data").getBoolean("modelRatedNotification"),
+                        blocked = jsonObject.getJSONObject("data").getBoolean("blocked"),
+                        canAdministrateForum = jsonObject.getJSONObject("data").getBoolean("canAdministrateForum"),
+                        canRetrieveDelivery = jsonObject.getJSONObject("data").getBoolean("canRetrieveDelivery"),
+                        canModerateCatalog = jsonObject.getJSONObject("data").getBoolean("canModerateCatalog"),
+                        canAdministrateSystem = jsonObject.getJSONObject("data").getBoolean("canAdministrateSystem"),
+                        isActivated = jsonObject.getJSONObject("data").getBoolean("isActivated"),
+                        registrationDate = jsonObject.getJSONObject("data").getString("registrationDate")
                     )
-                    return ProfileRequestBody(response.isSuccessful, null, userData)
+                    return ProfileGetRequestBody(response.isSuccessful, null, userData)
                 }
             } else {
                 Log.e("ApiManager", "Unsuccessful response: ${response.code}")
@@ -361,7 +373,7 @@ class ApiManager(private val okHttpConfig: OkHttpConfig) {
     fun getCart(): CartGetRequestBody? {
         val request = Request.Builder()
             .get()
-            .url(okHttpConfig.baseUrl + "cart")
+            .url(okHttpConfig.baseUrl + "cart/getItems")
             .build()
 
         try {
@@ -382,6 +394,63 @@ class ApiManager(private val okHttpConfig: OkHttpConfig) {
         } catch (e: IOException) {
             Log.e("ApiManager", "Network error", e)
             return null
+        }
+    }
+
+    fun deleteCart(modelId: Int) {
+        val builder = (okHttpConfig.baseUrl + "cart").toHttpUrlOrNull()?.newBuilder()
+
+        modelId.let { builder?.addQueryParameter("orderedModelId", it.toString())}
+
+        val request = Request.Builder()
+            .delete()
+            .url(builder?.build()!!)
+            .build()
+        try {
+            val response = okHttpConfig.client.newCall(request).execute()
+            val responseBody = response.body
+
+            if (response.isSuccessful) {
+                responseBody?.close()
+            } else {
+                Log.e("ApiManager", "Unsuccessful response: ${response.code}")
+                responseBody?.close()
+            }
+        } catch (e: IOException) {
+            Log.e("ApiManager", "Network error", e)
+        }
+    }
+
+    fun putModelToCart(putData: CartPutRequestBody) {
+        val url = OkHttpConfig.baseUrl + "cart"
+        val requestBody = MultipartBody.Builder()
+            .setType(MultipartBody.FORM)
+            .addFormDataPart("CatalogModelId", putData.catalogModelID.toString())
+            .addFormDataPart("Pieces", putData.pieces.toString())
+            .addFormDataPart("Depth", putData.depth.toString())
+            .addFormDataPart("Scale", putData.scale.toString())
+            .addFormDataPart("ColorId", putData.colorId.toString())
+            .addFormDataPart("PrintTypeName", putData.printTypeName)
+            .addFormDataPart("PrintMaterialName", putData.printMaterialName)
+            .addFormDataPart("File", (putData.file ?: "").toString())
+
+        val request = Request.Builder()
+            .url(url)
+            .put(requestBody.build())
+            .build()
+
+        try {
+            val response = okHttpConfig.client.newCall(request).execute()
+            val responseBody = response.body
+            if (response.isSuccessful) {
+                val responseData = response.body?.string()
+                responseBody?.close()
+            } else {
+                Log.e("ApiManager", "Unsuccessful response: ${response.code}")
+                responseBody?.close()
+            }
+        } catch (e: IOException) {
+            Log.e("ApiManager", "Network error", e)
         }
     }
 

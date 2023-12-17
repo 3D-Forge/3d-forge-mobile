@@ -1,5 +1,7 @@
 package com.example.a3dforge.entities
 
+import android.os.Parcelable
+
 data class CatalogGetRequestBody(
     val success: Boolean,
     val message: String?,

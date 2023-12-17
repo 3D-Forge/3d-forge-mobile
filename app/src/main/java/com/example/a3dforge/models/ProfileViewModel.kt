@@ -6,16 +6,16 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.a3dforge.base.ApiManager
-import com.example.a3dforge.entities.ProfileRequestBody
+import com.example.a3dforge.entities.ProfileGetRequestBody
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class ProfileViewModel(private val okHttpConfig: OkHttpConfig, private val userLogin: String) : ViewModel() {
 
-    private val _profileResult = MutableLiveData<Pair<Boolean, ProfileRequestBody?>>()
+    private val _profileResult = MutableLiveData<Pair<Boolean, ProfileGetRequestBody?>>()
 
-    val profileResult: LiveData<Pair<Boolean, ProfileRequestBody?>>
+    val profileResult: LiveData<Pair<Boolean, ProfileGetRequestBody?>>
         get() = _profileResult
 
     fun getProfile() {

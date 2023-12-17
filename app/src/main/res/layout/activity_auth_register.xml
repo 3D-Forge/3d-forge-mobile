@@ -5,24 +5,36 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.AuthRegisterActivity"
-    android:background="@color/purple">
+    android:background="?attr/colorOnPrimary">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <TextView
+            android:id="@+id/textView41"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="28dp"
+            android:text="3D Forge"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/logoImage"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <ImageView
             android:id="@+id/logoImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:src="@drawable/logo"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.496"
+            app:layout_constraintHorizontal_bias="0.375"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.024" />
+            app:layout_constraintVertical_bias="0.052" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/loginOptionButt"
@@ -101,6 +113,8 @@
             android:layout_marginTop="8dp"
             android:text="Запам'ятати мене"
             android:textColor="@color/white"
+            android:buttonTint="?attr/colorSecondary"
+            android:backgroundTint="?attr/arrowDownFillColor"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.048"

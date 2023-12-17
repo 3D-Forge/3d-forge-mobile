@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.a3dforge.base.ApiManager
 import com.example.a3dforge.entities.CatalogGetRequestBody
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 

@@ -30,8 +30,8 @@ import com.example.a3dforge.models.DeleteCartViewModel
 import com.example.a3dforge.models.ModelByIdViewModel
 import com.example.a3dforge.models.ProductPictureViewModel
 
-class CartAdapter(private val fragmentActivity: FragmentActivity, private val listener: CartAdapterListener) :
-    ListAdapter<Item, CartAdapter.ViewHolder>(Comparator()) {
+class CartOrderAdapter(private val fragmentActivity: FragmentActivity, private val listener: CartAdapterListener) :
+    ListAdapter<Item, CartOrderAdapter.ViewHolder>(Comparator()) {
 
     interface CartAdapterListener {
         fun onItemRemoved(item: Item)

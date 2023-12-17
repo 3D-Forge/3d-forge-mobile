@@ -3,6 +3,8 @@ package com.example.a3dforge.activities
 import OkHttpConfig
 import android.graphics.Rect
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
@@ -13,10 +15,13 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.a3dforge.R
@@ -25,6 +30,11 @@ import com.example.a3dforge.base.NDSpinner
 import com.example.a3dforge.factories.CatalogSearchViewModelFactory
 import com.example.a3dforge.models.CatalogSearchViewModel
 import com.example.a3dforge.models.SharedViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class CatalogFragment : Fragment() {
@@ -41,11 +51,21 @@ class CatalogFragment : Fragment() {
 
     private val sharedViewModel: SharedViewModel by activityViewModels()
 
+    private lateinit var loadingProgressBar: ProgressBar
+    private lateinit var loadingJob: Job
+    private lateinit var handler: Handler
+
+    private lateinit var catalogSearchViewModel: CatalogSearchViewModel
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_catalog, container, false)
+
+        handler = Handler(Looper.getMainLooper())
+
+        loadingProgressBar = view.findViewById(R.id.loadingProgressBar)
 
         searchEditText = view.findViewById(R.id.searchEditText)
         searchButton = view.findViewById(R.id.searchButton)
@@ -57,7 +77,7 @@ class CatalogFragment : Fragment() {
 
         val okHttpConfig = OkHttpConfig
 
-        val catalogSearchViewModel = ViewModelProvider(this, CatalogSearchViewModelFactory(okHttpConfig))
+        catalogSearchViewModel = ViewModelProvider(this, CatalogSearchViewModelFactory(okHttpConfig))
             .get(CatalogSearchViewModel::class.java)
 
         catalogSearchViewModel.profileResult.observe(viewLifecycleOwner, Observer { result  ->
@@ -66,6 +86,18 @@ class CatalogFragment : Fragment() {
                 adapter.submitList(list)
             }
         })
+
+        loadingJob = lifecycleScope.launch {
+            rcView.visibility = View.GONE
+
+            startLoadingAnimation()
+
+            loadCatalogData()
+
+            stopLoadingAnimation()
+
+            showRecyclerView()
+        }
 
         sortSpinner = view.findViewById(R.id.sortSpinner)
         val sortItems = listOf("За назвою", "За ціною", "За рейтингом")
@@ -115,19 +147,17 @@ class CatalogFragment : Fragment() {
                     sortDirectionAsc = !sortDirectionAsc
                 }
 
-                catalogSearchViewModel.getCatalog(
-                    sharedViewModel.filterParameters.q,
-                    sharedViewModel.filterParameters.categories,
-                    null,
-                    sharedViewModel.filterParameters.sortParameter,
-                    sharedViewModel.filterParameters.sortDirection,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                )
+                loadingJob = lifecycleScope.launch {
+                    rcView.visibility = View.GONE
+
+                    startLoadingAnimation()
+
+                    loadCatalogData()
+
+                    stopLoadingAnimation()
+
+                    showRecyclerView()
+                }
 
                 sortIndexImageView.rotation += 180F
             }
@@ -149,19 +179,17 @@ class CatalogFragment : Fragment() {
             sharedViewModel.filterParameters.minPrice = null
             sharedViewModel.filterParameters.maxPrice = null
             searchEditText.text = Editable.Factory.getInstance().newEditable("")
-            catalogSearchViewModel.getCatalog(
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-            )
+            loadingJob = lifecycleScope.launch {
+                rcView.visibility = View.GONE
+
+                startLoadingAnimation()
+
+                loadCatalogData()
+
+                stopLoadingAnimation()
+
+                showRecyclerView()
+            }
         }
 
         addNewModelButton.setOnClickListener{
@@ -182,37 +210,21 @@ class CatalogFragment : Fragment() {
 
         rcView.adapter = adapter
 
-        catalogSearchViewModel.getCatalog(
-            sharedViewModel.filterParameters.q,
-            sharedViewModel.filterParameters.categories,
-            null,
-            sharedViewModel.filterParameters.sortParameter,
-            sharedViewModel.filterParameters.sortDirection,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-        )
-
         searchEditText.setOnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 searchButton.setOnClickListener {
                     sharedViewModel.filterParameters.q = searchEditText.text.toString()
-                    catalogSearchViewModel.getCatalog(
-                        sharedViewModel.filterParameters.q,
-                        sharedViewModel.filterParameters.categories,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                    )
+                    loadingJob = lifecycleScope.launch {
+                        rcView.visibility = View.GONE
+
+                        startLoadingAnimation()
+
+                        loadCatalogData()
+
+                        stopLoadingAnimation()
+
+                        showRecyclerView()
+                    }
                 }
                 true
             } else {
@@ -222,19 +234,17 @@ class CatalogFragment : Fragment() {
 
         searchButton.setOnClickListener {
             sharedViewModel.filterParameters.q = searchEditText.text.toString()
-            catalogSearchViewModel.getCatalog(
-                sharedViewModel.filterParameters.q,
-                sharedViewModel.filterParameters.categories,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-            )
+            loadingJob = lifecycleScope.launch {
+                rcView.visibility = View.GONE
+
+                startLoadingAnimation()
+
+                loadCatalogData()
+
+                stopLoadingAnimation()
+
+                showRecyclerView()
+            }
         }
 
 
@@ -263,6 +273,75 @@ class CatalogFragment : Fragment() {
         })
 
         return view
+    }
+
+    private fun showRecyclerView() {
+        rcView.visibility = View.VISIBLE
+    }
+
+    private suspend fun loadCatalogData() {
+        withContext(Dispatchers.IO) {
+            try {
+                withContext(Dispatchers.Main) {
+                    catalogSearchViewModel.getCatalog(
+                        sharedViewModel.filterParameters.q.takeIf { it?.isNotBlank() == true },
+                        sharedViewModel.filterParameters.categories.takeIf { it?.isNotEmpty() == true },
+                        sharedViewModel.filterParameters.keywords?.takeIf { it.isNotEmpty() },
+                        sharedViewModel.filterParameters.sortParameter.takeIf { it?.isNotBlank() == true },
+                        sharedViewModel.filterParameters.sortDirection.takeIf { it?.isNotBlank() == true },
+                        sharedViewModel.filterParameters.minPrice.takeIf { it != null },
+                        sharedViewModel.filterParameters.maxPrice.takeIf { it != null },
+                        sharedViewModel.filterParameters.rating.takeIf { it != null },
+                        sharedViewModel.filterParameters.author.takeIf { it?.isNotBlank() == true },
+                        null,
+                        null
+                    )
+
+
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        loadingJob.cancel()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        loadingJob.cancel()
+    }
+
+    private suspend fun startLoadingAnimation() {
+        withContext(Dispatchers.Main) {
+            loadingProgressBar.visibility = View.VISIBLE
+        }
+    }
+
+    private suspend fun simulateDataLoading() {
+        withContext(Dispatchers.IO) {
+            val totalSteps = 100
+            for (currentStep in 1..totalSteps) {
+                updateProgressBar(currentStep, totalSteps)
+                delay(10)
+            }
+        }
+    }
+
+    private suspend fun updateProgressBar(currentStep: Int, totalSteps: Int) {
+        withContext(Dispatchers.Main) {
+            val progress = (currentStep * 100 / totalSteps)
+            loadingProgressBar.progress = progress
+        }
+    }
+
+    private suspend fun stopLoadingAnimation() {
+        withContext(Dispatchers.Main) {
+            loadingProgressBar.visibility = View.GONE
+        }
     }
 }
 

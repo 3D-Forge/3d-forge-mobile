@@ -1,14 +1,18 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <attr name="arrowDownFillColor" format="reference|color" />
     <!-- Base application theme. -->
-    <style name="Base.Theme._3DForge" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    <style name="Theme" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/dark_purple_theme</item>
+        <item name="colorOnPrimary">@color/purple</item>
+        <item name="colorSecondary">@color/white</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="arrowDownFillColor">@color/black</item>
+        <!-- Добавьте остальные элементы темы -->
     </style>
 
-    <style name="Theme._3DForge" parent="Base.Theme._3DForge" />
     <style name="RatingBar" parent="Theme.AppCompat">
-        <item name="colorControlNormal">@color/black</item>
-        <item name="colorControlActivated">@color/purple</item>
+        <item name="colorControlNormal">?attr/arrowDownFillColor</item>
+        <item name="colorControlActivated">?attr/colorOnPrimary</item>
     </style>
 
     <style name="CustomRangeSlider" parent="@style/Widget.MaterialComponents.Slider">

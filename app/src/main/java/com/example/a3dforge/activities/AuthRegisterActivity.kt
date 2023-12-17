@@ -13,10 +13,12 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.a3dforge.R
+import com.example.a3dforge.base.CustomToast
 import com.example.a3dforge.base.PreferenceHelper
 import com.example.a3dforge.factories.AuthRegisterViewModelFactory
 import com.example.a3dforge.models.AuthViewModel
@@ -43,6 +45,10 @@ class AuthRegisterActivity : AppCompatActivity() {
     private lateinit var preferenceHelper: PreferenceHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        preferenceHelper = PreferenceHelper(this)
+        val selectedTheme = preferenceHelper.getSelectedTheme()
+        AppCompatDelegate.setDefaultNightMode(selectedTheme)
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_auth_register)
 
@@ -84,7 +90,7 @@ class AuthRegisterActivity : AppCompatActivity() {
         authViewModel.authResult.observe(this, Observer { result ->
             val (isSuccessful, login) = result
             if (isSuccessful) {
-                Toast.makeText(this, "Авторизація успішна!", Toast.LENGTH_SHORT).show()
+                CustomToast.showSuccess(this, "Авторизація успішна!")
                 if (rememberCheckBox.isChecked) {
                     saveCredentials()
                 }
@@ -92,8 +98,7 @@ class AuthRegisterActivity : AppCompatActivity() {
                 intent.putExtra("user_login", login)
                 startActivity(intent)
             } else {
-                Log.e("AuthRegisterActivity", "Authentication failed")
-                Toast.makeText(this, "Неправильна пошта, логін чи пароль!", Toast.LENGTH_SHORT).show()
+                CustomToast.showError(this, "Неправильна пошта, логін чи пароль!")
             }
         })
 
@@ -121,10 +126,9 @@ class AuthRegisterActivity : AppCompatActivity() {
 
         registerViewModel.registrationResult.observe(this, Observer { success ->
             if (success) {
-                Toast.makeText(this, "Реєстрація успішна!", Toast.LENGTH_SHORT).show()
+                CustomToast.showSuccess(this, "Реєстрація успішна!")
             } else {
-                Log.e("AuthRegisterActivity", "Registration failed")
-                Toast.makeText(this, "Помилка реєстрації", Toast.LENGTH_SHORT).show()
+                CustomToast.showError(this, "Помилка реєстрації")
             }
         })
 
@@ -134,9 +138,9 @@ class AuthRegisterActivity : AppCompatActivity() {
             val password = passwordRegEditText.text.toString()
             val confirmPassword = passwordRegConfirmEditText.text.toString()
             if (password != confirmPassword) {
-                Toast.makeText(this, "Неправильний повтор паролю!", Toast.LENGTH_SHORT).show()
+                CustomToast.showSuccess(this, "Неправильний повтор паролю!")
             } else if (!confirmationCheckBox.isChecked){
-                Toast.makeText(this, "Погодьтесь з умовами!", Toast.LENGTH_SHORT).show()
+                CustomToast.showError(this, "Погодьтесь з умовами!")
             } else {
                 GlobalScope.launch {
                     registerViewModel.registerUser(login, email, password, confirmPassword)
