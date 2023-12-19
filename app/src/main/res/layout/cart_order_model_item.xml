@@ -3,11 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     app:cardBackgroundColor="?attr/colorOnPrimary"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="4dp"
@@ -16,18 +16,17 @@
 
         <TextView
             android:id="@+id/cartOrderModelColorTextView"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:layout_marginStart="12dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="112dp"
             android:ellipsize="end"
             android:maxLines="2"
             android:text="Синій"
             android:textColor="@color/white"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toEndOf="@+id/productImageView"
+            app:layout_constraintStart_toEndOf="@+id/productOrderImageView"
             app:layout_constraintTop_toBottomOf="@+id/cartOrderModelNameTextView" />
 
         <TextView
@@ -56,7 +55,7 @@
             app:layout_constraintTop_toBottomOf="@+id/cartOrderModelColorTextView" />
 
         <ImageView
-            android:id="@+id/productImageView"
+            android:id="@+id/productOrderImageView"
             android:layout_marginStart="16dp"
             android:layout_width="106dp"
             android:layout_height="79dp"
@@ -66,7 +65,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/countDecreaseImageView"
+            android:id="@+id/countOrderDecreaseImageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -76,31 +75,32 @@
             app:srcCompat="@drawable/ic_minus" />
 
         <TextView
-            android:id="@+id/countTextView"
+            android:id="@+id/countOrderTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:text="1"
             android:textColor="@color/white"
-            app:layout_constraintStart_toEndOf="@+id/countDecreaseImageView"
+            app:layout_constraintStart_toEndOf="@+id/countOrderDecreaseImageView"
             app:layout_constraintTop_toBottomOf="@+id/cartOrderModelColorTextView" />
 
         <ImageView
-            android:id="@+id/countIncreaseImageView"
+            android:id="@+id/countOrderIncreaseImageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            app:layout_constraintStart_toEndOf="@+id/countTextView"
+            app:layout_constraintStart_toEndOf="@+id/countOrderTextView"
             app:layout_constraintTop_toBottomOf="@+id/cartOrderModelColorTextView"
             app:srcCompat="@drawable/ic_add_circle" />
 
         <ImageView
-            android:id="@+id/imageView21"
+            android:id="@+id/orderParametersImageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="16dp"
+            app:layout_constraintStart_toEndOf="@+id/cartOrderModelNameTextView"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_change_icon" />
 

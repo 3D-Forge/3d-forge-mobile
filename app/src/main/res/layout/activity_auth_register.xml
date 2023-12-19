@@ -113,7 +113,7 @@
             android:layout_marginTop="8dp"
             android:text="Запам'ятати мене"
             android:textColor="@color/white"
-            android:buttonTint="?attr/colorSecondary"
+            android:buttonTint="?attr/arrowDownFillColor"
             android:backgroundTint="?attr/arrowDownFillColor"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -233,6 +233,8 @@
             android:layout_marginTop="28dp"
             android:text="Створюючи акаунт ви погоджуєтесь"
             android:textColor="@color/white"
+            android:buttonTint="?attr/arrowDownFillColor"
+            android:backgroundTint="?attr/arrowDownFillColor"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/passwordRegConfirmEditText" />
     </androidx.constraintlayout.widget.ConstraintLayout>

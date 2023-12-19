@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="?attr/colorOnPrimary">
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/bottomView">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -120,7 +116,11 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
+                android:id="@+id/orderRecyclerView"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="200dp"
@@ -140,17 +140,55 @@
                 android:textSize="12sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/recyclerView" />
+                app:layout_constraintTop_toBottomOf="@+id/orderRecyclerView" />
+
+            <View
+                android:id="@+id/view"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="40dp"
+                android:background="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView32" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="4dp"
+                android:text="Загалом"
+                android:textColor="@color/black"
+                app:layout_constraintStart_toStartOf="@+id/view"
+                app:layout_constraintTop_toTopOf="@+id/view" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="30dp"
+                android:text="570 ₴"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/view" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/confirmOrderButton"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                android:text="Підтвердити"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="24sp"
+                android:background="@drawable/round_btn_circled"
+                app:layout_constraintTop_toBottomOf="@+id/view"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="30dp" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </ScrollView>
-
-    <View
-        android:id="@+id/bottomView"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_alignParentBottom="true"
-        android:background="@color/white" />
-
-</RelativeLayout>
+</ScrollView>

@@ -253,6 +253,7 @@ class EditProfileFragment : Fragment() {
 
             val words = fullNameEditProfileEditText.text.split(" ")
             if (words.size != 3 || fullNameEditProfileEditText.text.toString() == "") {
+                println(words.size)
                 Toast.makeText(this.requireContext(), "Введіть повне ім'я!", Toast.LENGTH_SHORT).show()
             } else {
                 userData = ProfilePutRequestBody.UserPutData(

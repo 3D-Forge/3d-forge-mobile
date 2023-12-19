@@ -1,0 +1,11 @@
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/orderSpinnerTextView"
+    android:layout_width="match_parent"
+    android:layout_height="35dp"
+    android:textColor="@android:color/black"
+    android:textSize="12sp"
+    android:background="@drawable/spinner_purple_border"
+    android:paddingStart="10dp"
+    android:text="Test"
+    android:gravity="start|center_vertical"
+    android:textAppearance="?android:attr/textAppearanceListItem"/>

@@ -7,6 +7,7 @@ import com.example.a3dforge.entities.CartPutRequestBody
 import com.example.a3dforge.entities.CatalogGetRequestBody
 import com.example.a3dforge.entities.CategoriesGetRequestBody
 import com.example.a3dforge.entities.ModelByIdGetRequestBody
+import com.example.a3dforge.entities.OrderPutRequestBody
 import com.example.a3dforge.entities.ProfileGetRequestBody
 import com.example.a3dforge.entities.SignInRequestBody
 import com.google.gson.Gson
@@ -437,6 +438,46 @@ class ApiManager(private val okHttpConfig: OkHttpConfig) {
         val request = Request.Builder()
             .url(url)
             .put(requestBody.build())
+            .build()
+
+        try {
+            val response = okHttpConfig.client.newCall(request).execute()
+            val responseBody = response.body
+            if (response.isSuccessful) {
+                val responseData = response.body?.string()
+                responseBody?.close()
+            } else {
+                Log.e("ApiManager", "Unsuccessful response: ${response.code}")
+                responseBody?.close()
+            }
+        } catch (e: IOException) {
+            Log.e("ApiManager", "Network error", e)
+        }
+    }
+
+    fun putOrder(putData: OrderPutRequestBody) {
+        val url = OkHttpConfig.baseUrl + "orders"
+
+        val jsonMediaType = "application/json".toMediaType()
+        val requestBody = """
+            {
+                "cartId": ${putData.cartId},
+                "firstname": "${putData.firstname}",
+                "midname": "${putData.midname}",
+                "lastname": "${putData.lastname}",
+                "country": "${putData.country}",
+                "region": "${putData.region}",
+                "city": "${putData.city}",
+                "cityRegion": "${putData.cityRegion}",
+                "street": "${putData.street}",
+                "house": "${putData.house}",
+                "apartment": "${putData.apartment}"
+            }
+        """.trimIndent().toRequestBody(jsonMediaType)
+
+        val request = Request.Builder()
+            .url(url)
+            .put(requestBody)
             .build()
 
         try {

@@ -107,7 +107,6 @@ class AuthRegisterActivity : AppCompatActivity() {
             val password = passwordEditText.text.toString()
 
             authViewModel.authenticateUser(loginOrEmail, password)
-
         }
 
         passwordEditText.setOnEditorActionListener { _, actionId, _ ->

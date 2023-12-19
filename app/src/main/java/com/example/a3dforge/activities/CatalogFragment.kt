@@ -56,7 +56,6 @@ class CatalogFragment : Fragment() {
     private lateinit var handler: Handler
 
     private lateinit var catalogSearchViewModel: CatalogSearchViewModel
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -247,7 +246,6 @@ class CatalogFragment : Fragment() {
             }
         }
 
-
         filterButton.setOnClickListener{
             val searchfilterFragment = SearchFilterFragment()
 
@@ -296,8 +294,6 @@ class CatalogFragment : Fragment() {
                         null,
                         null
                     )
-
-
                 }
             } catch (e: Exception) {
                 e.printStackTrace()

@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:paddingBottom="16dp">
+
+        <EditText
+            android:id="@+id/scaleOrderParametersEditText"
+            android:layout_width="100dp"
+            android:layout_height="38dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/order_edittext_border"
+            android:ems="10"
+            android:gravity="center"
+            android:inputType="number"
+            android:textColor="@color/black"
+            android:text="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView72411" />
+
+        <TextView
+            android:id="@+id/textView72411"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
+            android:text="Масштаб"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/xAxisOrderParametersEditText" />
+
+        <EditText
+            android:id="@+id/zAxisOrderParametersEditText"
+            android:layout_width="100dp"
+            android:layout_height="38dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/order_edittext_border"
+            android:ems="10"
+            android:gravity="center"
+            android:inputType="number"
+            android:textColor="@color/black"
+            android:paddingEnd="14dp"
+            android:text="100"
+            app:layout_constraintStart_toEndOf="@+id/yAxisOrderParametersEditText"
+            app:layout_constraintTop_toBottomOf="@+id/textView42411" />
+
+        <EditText
+            android:id="@+id/yAxisOrderParametersEditText"
+            android:layout_width="100dp"
+            android:layout_height="38dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/order_edittext_border"
+            android:ems="10"
+            android:gravity="center"
+            android:inputType="number"
+            android:textColor="@color/black"
+            android:paddingEnd="14dp"
+            android:text="100"
+            app:layout_constraintStart_toEndOf="@+id/xAxisOrderParametersEditText"
+            app:layout_constraintTop_toBottomOf="@+id/textView42411" />
+
+        <TextView
+            android:id="@+id/textView42411"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
+            android:text="Розмір"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/blueColorOrderParametersButton" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/blueColorOrderParametersButton"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/order_parameters_btn_unpressed"
+            android:text="Синій"
+            android:textColor="@color/black"
+            android:textAllCaps="false"
+            android:layout_marginStart="24dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/blackColorOrderParametersButton" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/redColorOrderParametersButton"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:background="@drawable/order_parameters_btn_unpressed"
+            android:text="Червоний"
+            android:textColor="@color/black"
+            android:textAllCaps="false"
+            android:layout_marginStart="38dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/textView423411"
+            app:layout_constraintStart_toEndOf="@+id/whiteColorOrderParametersButton"
+            tools:layout_editor_absoluteY="381dp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/whiteColorOrderParametersButton"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/order_parameters_btn_unpressed"
+            android:text="Білий"
+            android:layout_marginStart="38dp"
+            android:textColor="@color/black"
+            android:textAllCaps="false"
+            app:layout_constraintStart_toEndOf="@+id/blackColorOrderParametersButton"
+            app:layout_constraintTop_toBottomOf="@+id/textView423411" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/blackColorOrderParametersButton"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/order_parameters_btn_unpressed"
+            android:text="Чорний"
+            android:textColor="@color/black"
+            android:textAllCaps="false"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView423411" />
+
+        <TextView
+            android:id="@+id/textView42341"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
+            android:text="Тип матеріалу"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/orderParametersPrintTypeSpinner" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/orderPlaButton"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/order_parameters_btn"
+            android:text="PLA"
+            android:layout_marginStart="38dp"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toEndOf="@+id/orderAbsButton"
+            app:layout_constraintTop_toBottomOf="@+id/textView42341" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/orderAsaButton"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/order_parameters_btn"
+            android:text="ASA"
+            android:layout_marginStart="38dp"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toEndOf="@+id/orderPlaButton"
+            app:layout_constraintTop_toBottomOf="@+id/textView42341"
+            tools:layout_editor_absoluteX="300dp" />
+
+        <TextView
+            android:id="@+id/textView423411"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
+            android:text="Колір"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/orderAbsButton" />
+
+        <TextView
+            android:id="@+id/textView423"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:text="Тип друку"
+            android:textColor="@color/black"
+            android:layout_marginTop="16dp"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/depthOrderParametersEditText" />
+
+        <TextView
+            android:id="@+id/textView40"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Налаштування"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView43"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="замовлення"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView40" />
+
+        <ImageView
+            android:id="@+id/closeOrderParametersImageView"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_close_black" />
+
+        <TextView
+            android:id="@+id/textView42"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="14dp"
+            android:text="Відсоток заповнення"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView43" />
+
+        <EditText
+            android:id="@+id/depthOrderParametersEditText"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/edittext_purple_border_less_circled"
+            android:ems="10"
+            android:inputType="number"
+            android:text="100"
+            android:textColor="@color/black"
+            android:paddingStart="10dp"
+            android:layout_marginTop="8dp"
+            tools:layout_editor_absoluteX="21dp"
+            tools:layout_editor_absoluteY="128dp"
+            app:layout_constraintTop_toBottomOf="@+id/textView42"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <Spinner
+            android:id="@+id/orderParametersPrintTypeSpinner"
+            android:background="@drawable/spinner_purple_rounded_background"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView423" />
+
+        <ImageView
+            android:id="@+id/imageView21"
+            android:layout_width="34dp"
+            android:layout_height="38dp"
+            android:layout_marginEnd="8dp"
+            android:elevation="8dp"
+            app:layout_constraintEnd_toEndOf="@+id/orderParametersPrintTypeSpinner"
+            app:layout_constraintTop_toTopOf="@+id/orderParametersPrintTypeSpinner"
+            app:srcCompat="@drawable/ic_keyboard_arrow_down_black" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/orderAbsButton"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginStart="24dp"
+            android:background="@drawable/order_parameters_btn"
+            android:text="ABS"
+            android:textColor="@color/black"
+            app:layout_constraintTop_toBottomOf="@+id/textView42341"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="293dp" />
+
+        <EditText
+            android:id="@+id/xAxisOrderParametersEditText"
+            android:layout_width="100dp"
+            android:layout_height="38dp"
+            android:background="@drawable/order_edittext_border"
+            android:ems="10"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:inputType="number"
+            android:paddingEnd="14dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            android:text="100"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView42411" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/confirmOrderParametersButton"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@drawable/round_btn_circled"
+            android:text="Підтвердити"
+            android:textColor="@color/white"
+            android:textAllCaps="false"
+            android:textSize="24sp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/scaleOrderParametersEditText" />
+
+        <TextView
+            android:id="@+id/percentTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="44dp"
+            android:layout_marginTop="6dp"
+            android:text="%"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="@+id/depthOrderParametersEditText"
+            app:layout_constraintTop_toTopOf="@+id/depthOrderParametersEditText" />
+
+        <TextView
+            android:id="@+id/textView44"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="x"
+            android:textSize="18sp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="6dp"
+            app:layout_constraintStart_toStartOf="@+id/xAxisOrderParametersEditText"
+            app:layout_constraintTop_toTopOf="@+id/xAxisOrderParametersEditText" />
+
+        <TextView
+            android:id="@+id/textView44"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="y"
+            android:textSize="18sp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="6dp"
+            app:layout_constraintStart_toStartOf="@+id/yAxisOrderParametersEditText"
+            app:layout_constraintTop_toTopOf="@+id/yAxisOrderParametersEditText" />
+
+        <TextView
+            android:id="@+id/textView44"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="z"
+            android:textSize="18sp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="6dp"
+            app:layout_constraintStart_toStartOf="@+id/zAxisOrderParametersEditText"
+            app:layout_constraintTop_toTopOf="@+id/zAxisOrderParametersEditText" />
+
+        <TextView
+            android:id="@+id/xAxisSmOrderParametersTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="см"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="18dp"
+            app:layout_constraintEnd_toEndOf="@+id/xAxisOrderParametersEditText"
+            app:layout_constraintTop_toTopOf="@+id/xAxisOrderParametersEditText" />
+
+        <TextView
+            android:id="@+id/yAxisSmOrderParametersTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="см"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="18dp"
+            app:layout_constraintEnd_toEndOf="@+id/yAxisOrderParametersEditText"
+            app:layout_constraintTop_toTopOf="@+id/yAxisOrderParametersEditText" />
+
+        <TextView
+            android:id="@+id/zAxisSmOrderParametersTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="см"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="18dp"
+            app:layout_constraintEnd_toEndOf="@+id/zAxisOrderParametersEditText"
+            app:layout_constraintTop_toTopOf="@+id/zAxisOrderParametersEditText" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
